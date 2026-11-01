@@ -3,56 +3,60 @@
 // ============================================
 
 // ============================================================
-//  Floating rotation — פלטפורמת משחקים
+//  URotation — פלטפורמת משחקים
 // ============================================================
 
-// ---------- ניווט בין החנות למשחקים ----------
-const store = document.getElementById('store');
-const gameHost = document.getElementById('gameHost');
+// ---------- הרכבת משחק ופירוק שלו ----------
+// מסך המשחק עצמו (המסגרת, הפס, "עוד משחקים", הכתובת #play/...) נמצא ב-hub.js.
 const gameMount = document.getElementById('gameMount');
-const gameTitle = document.getElementById('gameTitle');
 let activeCleanup = null;
 
 function openGame(g) {
-  store.style.display = 'none';
-  gameHost.style.display = 'flex';
-  // הכותרת כמו בכרטיס — שם שכבר תורגם לשפה הנבחרת (g.title נשאר תמיד בשפת המקור)
-  const cardTitle = document.querySelector('.gcard[data-gid="'+g.id+'"] h3');
-  gameTitle.textContent = cardTitle ? cardTitle.textContent : g.title;
-  gameMount.innerHTML = '';
+  closeGame();
   activeCleanup = g.mount(gameMount) || null;
 }
-function backToStore() {
+function closeGame() {
   if (activeCleanup) activeCleanup();
   activeCleanup = null;
   gameMount.innerHTML = '';
-  gameHost.style.display = 'none';
-  store.style.display = 'block';
 }
-document.getElementById('backBtn').onclick = backToStore;
 
-// משחק שחי בריפו נפרד ומוטמע בתוך הפלטפורמה.
-// מאז floatingrotations.com הוא על מקור אחר: למקד את המקלדת אליו עדיין אפשר,
-// אבל את השפה שלנו מ-localStorage הוא לא רואה, אז היא עוברת אליו ב-?lang=
-function mountIframe(url) {
+// משחק שחי בכתובת אחרת ומוטמע בתוך הפלטפורמה. הוא על מקור אחר, אז את השפה שלנו מ-localStorage
+// הוא לא רואה, והיא עוברת אליו ב-?lang=
+// minH — למשחק שהעמוד שלו לא יורד מתחת לגובה הזה: המסגרת מוקטנת כדי שייכנס כולו, בלי פס גלילה.
+function mountIframe(url, minH) {
   return function (host) {
     const f = document.createElement('iframe');
     let lang = 'he';
     try { lang = localStorage.getItem('flrot:lang') || 'he'; } catch (e) {}
     f.src = url + (url.includes('?') ? '&' : '?') + 'lang=' + encodeURIComponent(lang);
     f.title = 'game';
-    f.allow = 'autoplay; fullscreen; gamepad';
+    f.allow = 'autoplay; fullscreen; gamepad; clipboard-write; web-share';
     f.style.cssText = 'width:100%;height:100%;border:0;display:block;background:#0d1620';
     // ה-flex המרכז של המארח מקטין את המסגרת לגובה 0
     host.style.padding = '0';
     host.style.display = 'block';
     host.appendChild(f);
+    const fit = () => {
+      const k = Math.min(1, host.clientHeight / minH);
+      f.style.width = host.clientWidth / k + 'px';
+      f.style.height = host.clientHeight / k + 'px';
+      f.style.scale = k < 1 ? k : '';
+    };
+    const fitObs = minH ? new ResizeObserver(fit) : null;
+    if (fitObs) {
+      f.style.position = 'absolute';
+      f.style.inset = '0 auto auto 0';
+      f.style.transformOrigin = '0 0';
+      fitObs.observe(host);
+    }
     // בלי מיקוד המקלדת בתוך המסגרת, רווח ומקשי הקושי לא מגיעים למשחק
     const focus = () => { try { f.contentWindow.focus(); } catch (e) {} };
     f.addEventListener('load', focus);
     host.addEventListener('mousedown', focus);
     setTimeout(focus, 250);
     return function cleanup() {
+      if (fitObs) fitObs.disconnect();
       host.removeEventListener('mousedown', focus);
       host.style.padding = '';
       host.style.display = '';
@@ -62,15 +66,23 @@ function mountIframe(url) {
 }
 
 // ---------- קטלוג המשחקים בפלטפורמה ----------
+// mount — איך המשחק נטען במסך המשחק של האתר. משחק שחי בכתובת אחרת: mount:mountIframe('https://...').
+// type — סוג המשחק שכתוב על הכרטיס: ARCADE, CASUAL, PUZZLE, STRATEGY, SPORT, SURVIVAL, FUNNY, SIMULATION.
+// added:'שנה-חודש-יום' — היום שבו המשחק נוסף. שבועיים מהיום הזה כתוב על הכרטיס "חדש!",
+//   ואחר כך סוג המשחק. זה מתחלף לבד, לא צריך לגעת בשום דבר.
+// plainBg:true — ללוגו יש רקע משלו (לא שקוף). אז אין מאחוריו תמונה מטושטשת, והכרטיס מקבל את
+//   צבע ה-bg בלבד. bg צריך להיות בדיוק הצבע של רקע הלוגו, כדי שלא יראו את הריבוע שלו.
+// dim:'3d' — משחק בתלת-ממד (מופיע בלשונית 3D של "משחקים חינמיים"). בלי dim המשחק הוא 2D.
 const GAMES = [
-  { id:'zombies', title:'מתקפת הזומבים', desc:'שרוד 20 מפות, חסל זומבים ובוסים ושדרג את הנשקים שלך.', imgFile:'zombie-attack/assets/last-stand-bg.png', imgFill:true, icon:'🧟', badge:'חדש!', bg:'#151b15', mount:mountIframe('zombie-attack/') },
-  { id:'dino', title:'Dino Runner', desc:'רוץ, קפוץ, אסוף מטבעות וקנה דמויות בחנות.', imgFile:'dino-logo.png', icon:'🦖', badge:'ARCADE', bg:'linear-gradient(135deg,#1b3a4b,#0d1b2a)', mount:mountDino },
-  { id:'catch', title:'Star Catcher', desc:'תפוס כוכבים נופלים עם הסלסלה.', imgFile:'star-logo.png', icon:'⭐', badge:'CASUAL', bg:'#161736', mount:mountCatch },
-  { id:'memory', title:'Memory Adjustment', desc:'מצא את כל הזוגות — 7 שלבים נגד השעון.', imgFile:'memory-logo.png', icon:'🧠', badge:'PUZZLE', bg:'linear-gradient(135deg,#1b4b3a,#0d1b2a)', mount:mountMemory },
-  { id:'button', title:'אל תלחץ על הכפתור', desc:'משחק כפתור כאוטי ומצחיק — נוצר על ידי רובין!', img:BUTTON_LOGO, icon:'🔴', badge:'רובין', bg:'linear-gradient(135deg,#4b1b2a,#0d1b2a)', url:'https://unique-flan-89080c.netlify.app/' },
-  { id:'chess', title:'Chess Prestige', desc:'שחמט נגד המחשב או מול חבר.', imgFile:'chess-logo.png', icon:'♞', badge:'STRATEGY', bg:'#0a0a0a', mount:mountChess },
-  { id:'tetris', title:'Tetris', desc:'טטריס תלת-ממדי — סובב, הפל ונקה שורות!', imgFile:'tetris-logo.png', icon:'🟪', badge:'חדש!', bg:'linear-gradient(135deg,#2a1b4b,#0d1b2a)', mount:mountTetris },
-  { id:'pong', title:'פינג פונג', desc:'מול המחשב, מול חבר על אותו מחשב, או אונליין עם קוד חדר.', imgFile:'pong-logo.jpg', icon:'🏓', badge:'ספורט', bg:'#00000f', mount:mountIframe('https://shachardorhaim-sketch.github.io/ping-pong-3d/') },
+  { id:'house-design', dim:'3d', title:'עיצוב בתים', desc:'עצב חדרים ובתים לפי בקשות הלקוחות, נהל תקציב וקבל דירוג כוכבים. למחשב ועכבר.', imgFile:'house-design-card.webp', imgFill:true, icon:'🏠', type:'SIMULATION', added:'2026-10-30', bg:'#e4ecd9', mount:mountIframe('https://house-design-robin.netlify.app/') },
+  { id:'zombies', title:'מתקפת הזומבים', desc:'שרוד 20 מפות, חסל זומבים ובוסים ושדרג את הנשקים שלך.', imgFile:'zombie-card.webp', imgFill:true, icon:'🧟', type:'SURVIVAL', added:'2026-09-12', bg:'#151b15', mount:mountIframe('zombie-attack/') },
+  { id:'dino', title:'Dino Runner', desc:'רוץ, קפוץ, אסוף מטבעות וקנה 100 דמויות בחנות.', imgFile:'dino-logo.png', icon:'🦖', type:'ARCADE', added:'2026-07-15', bg:'linear-gradient(135deg,#1b3a4b,#0d1b2a)', mount:mountDino },
+  { id:'catch', title:'Star Catcher', desc:'תפוס כוכבים נופלים עם הסלסלה.', imgFile:'star-logo.png', icon:'⭐', type:'CASUAL', added:'2026-07-15', bg:'#161736', mount:mountCatch },
+  { id:'memory', title:'Memory Adjustment', desc:'מצא את כל הזוגות — 7 שלבים נגד השעון.', imgFile:'memory-logo.png', icon:'🧠', type:'PUZZLE', added:'2026-07-15', bg:'linear-gradient(135deg,#1b4b3a,#0d1b2a)', mount:mountMemory },
+  { id:'button', title:'אל תלחץ על הכפתור', desc:'משחק כפתור כאוטי ומצחיק.', imgFile:'button-logo.png', icon:'🔴', type:'FUNNY', added:'2026-07-15', bg:'linear-gradient(135deg,#4b1b2a,#0d1b2a)', mount:mountIframe('https://unique-flan-89080c.netlify.app/', 866) },
+  { id:'chess', title:'Chess Prestige', desc:'שחמט נגד המחשב או מול חבר.', imgFile:'chess-logo.png', icon:'♞', type:'STRATEGY', added:'2026-07-16', bg:'#0a0a0a', mount:mountChess },
+  { id:'tetris', title:'Tetris', desc:'טטריס — סובב, הפל ונקה שורות!', imgFile:'tetris-logo.png', icon:'🟪', type:'PUZZLE', added:'2026-07-18', bg:'linear-gradient(135deg,#2a1b4b,#0d1b2a)', mount:mountTetris },
+  { id:'pong', dim:'3d', plainBg:true, title:'פינג פונג', desc:'מול המחשב, מול חבר על אותו מחשב, או אונליין עם קוד חדר.', imgFile:'pong-logo.jpg', icon:'🏓', type:'SPORT', added:'2026-08-29', bg:'#00000f', mount:mountIframe('https://shachardorhaim-sketch.github.io/ping-pong-3d/?v=3') },
 ];
 
 const grid = document.getElementById('grid');
@@ -78,24 +90,22 @@ GAMES.forEach(g => {
   const card = document.createElement('div');
   card.className = 'gcard';
   card.dataset.gid = g.id;
+  card.dataset.dim = g.dim || '2d';
   card.tabIndex = 0;
-  // תמיכה ב-3 סוגי תמונה: קובץ (imgFile), base64 (img), או אימוג'י (icon)
-  // imgFill:true — תמונת סצנה/רקע שממלאת את כל המשבצת (cover, בלי שוליים).
-  // ברירת מחדל — לוגו שמוצג במלואו וממורכז עם שוליים.
-  const imgStyle = g.imgFill
-    ? 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block'
-    : 'max-height:110px;max-width:90%';
-  const thumbContent = g.imgFile
-    ? '<img src="'+g.imgFile+'" alt="" style="'+imgStyle+'"/>'
-    : g.img
-    ? '<img src="data:image/png;base64,'+g.img+'" alt="" style="'+imgStyle+'"/>'
+  // תמיכה ב-2 סוגי תמונה: קובץ (imgFile) או אימוג'י (icon)
+  // imgFill:true — תמונת סצנה שממלאת את כל המשבצת (cover).
+  // ברירת מחדל — לוגו שלם וממורכז, ומאחוריו אותה תמונה מטושטשת כרקע.
+  const src = g.imgFile || '';
+  const thumbContent = src
+    ? (g.imgFill || g.plainBg ? '' : '<div class="gthumb-bd" style="background-image:url(' + src + ')"></div>') +
+      '<img class="gimg' + (g.imgFill ? ' fill' : '') + '" src="' + src + '" alt="">'
     : '<span class="gicon">'+g.icon+'</span>';
   card.innerHTML =
-    '<div class="gthumb" style="background:'+g.bg+'">'+thumbContent+'<span class="gbadge">'+g.badge+'</span></div>' +
+    '<div class="gthumb" style="background:'+g.bg+'">'+thumbContent+'<span class="gbadge"></span></div>' +
     '<div class="gbody"><h3>'+g.title+'</h3><p>'+g.desc+'</p>' +
     '<button class="gplay'+(g.soon?' soon':'')+'">'+(g.soon?'בקרוב':'▶ שחק')+'</button></div>';
   if (!g.soon) {
-    const open = () => { if (g.url) openExternal(g); else openGame(g); };
+    const open = () => window.flrotPlay(g.id);
     card.querySelector('.gplay').onclick = open;
     card.onclick = e => { if (e.target.tagName!=='BUTTON') open(); };
     // Enter על כפתור "שחק" כבר מפעיל את ה-onclick שלו — בלי הבדיקה המשחק נפתח פעמיים ומופע אחד לא נסגר
@@ -104,14 +114,8 @@ GAMES.forEach(g => {
   grid.appendChild(card);
 });
 
-// פתיחת משחק חיצוני (של רובין) — נפתח ישר בלשונית חדשה
-function openExternal(g) {
-  // noopener: בלי זה הדף החיצוני מקבל גישה ל-window.opener ויכול להחליף את הלשונית שלנו
-  window.open(g.url, '_blank', 'noopener');
-}
-
 // ============================================================
-//  משחק 1 — DINO RUNNER (עם חנות דמויות + שיאים)
+//  משחק 1 — DINO RUNNER (מטבעות, 100 דמויות ושיאים)
 // ============================================================
 
 
@@ -119,13 +123,26 @@ function openExternal(g) {
 //  הגדרות: שפה (9 שפות), צבע רקע (130+ צבעים), אימייל
 // ============================================================
 (function(){
-  const TR = {"he":{"tag":"פלטפורמת המשחקים שלי","welcome":"ברוך הבא!","subtitle":"אוסף המשחקים שלי — כולם נבנו כאן. בחר משחק ושחק!","allGames":"כל המשחקים","builtBy":"נבנה על ידי שחר דור-חיים ורובין שמואלי","play":"▶ שחק","soon":"בקרוב","back":"← חזרה לחנות","settings":"הגדרות","language":"שפה","email":"אימייל","emailPh":"הכנס אימייל...","save":"שמור","saved":"נשמר! ✓","bg":"צבע רקע","reset":"איפוס","close":"סגור","arcade":"ארקייד","casual":"קליל","puzzle":"חידה","strategy":"אסטרטגיה","newb":"חדש!","soonb":"בקרוב","robin":"רובין","dino":"רוץ, קפוץ, אסוף מטבעות וקנה דמויות בחנות.","catch":"תפוס כוכבים נופלים עם הסלסלה.","memory":"מצא את כל הזוגות — 7 שלבים נגד השעון.","button":"משחק כפתור כאוטי ומצחיק — נוצר על ידי רובין!","chess":"שחמט נגד המחשב או מול חבר.","tetris":"טטריס תלת-ממדי — סובב, הפל ונקה שורות!","fight":"המשחק הגדול מ־Godot — בקרוב!","button_t":"אל תלחץ על הכפתור","fight_t":"משחק לחימה","t_dino":"ריצת דינוזאור","t_catch":"תופס הכוכבים","t_memory":"משחק הזיכרון","t_chess":"שחמט","t_tetris":"טטריס","t_pong":"פינג פונג","pong":"מול המחשב, מול חבר על אותו מחשב, או אונליין עם קוד חדר.","sport":"ספורט","t_zombies":"מתקפת הזומבים","zombies":"שרוד 20 מפות, חסל זומבים ובוסים ושדרג את הנשקים שלך."},"en":{"tag":"My games platform","welcome":"Welcome!","subtitle":"My games collection — all built right here. Pick a game and play!","allGames":"All games","builtBy":"Built by Shachar Dor-Haim & Robin Shmueli","play":"▶ Play","soon":"Soon","back":"← Back to store","settings":"Settings","language":"Language","email":"Email","emailPh":"Enter email...","save":"Save","saved":"Saved! ✓","bg":"Background color","reset":"Reset","close":"Close","arcade":"ARCADE","casual":"CASUAL","puzzle":"PUZZLE","strategy":"STRATEGY","newb":"NEW!","soonb":"SOON","robin":"Robin","dino":"Run, jump, collect coins and buy characters in the shop.","catch":"Catch falling stars with the basket.","memory":"Find all the pairs — 7 levels against the clock.","button":"A chaotic, funny button game — made by Robin!","chess":"Chess against the computer or a friend.","tetris":"3D Tetris — rotate, drop and clear lines!","fight":"The big game from Godot — coming soon!","button_t":"Don't Press the Button","fight_t":"Fighting Game","t_dino":"Dino Runner","t_catch":"Star Catcher","t_memory":"Memory Adjustment","t_chess":"Chess Prestige","t_tetris":"Tetris","t_pong":"Ping Pong","pong":"Against the computer, against a friend on one keyboard, or online with a room code.","sport":"SPORT","t_zombies":"Zombie Attack","zombies":"Survive 20 maps, take down zombies and bosses, and upgrade your weapons."},"ar":{"tag":"منصة ألعابي","welcome":"أهلاً بك!","subtitle":"مجموعة ألعابي — كلها بُنيت هنا. اختر لعبة والعب!","allGames":"كل الألعاب","builtBy":"بُني بواسطة شاحار دور-حاييم وروبين شموئيلي","play":"▶ العب","soon":"قريباً","back":"← العودة إلى المتجر","settings":"الإعدادات","language":"اللغة","email":"البريد الإلكتروني","emailPh":"أدخل البريد الإلكتروني...","save":"حفظ","saved":"تم الحفظ! ✓","bg":"لون الخلفية","reset":"إعادة تعيين","close":"إغلاق","arcade":"أركيد","casual":"عادي","puzzle":"ألغاز","strategy":"استراتيجية","newb":"جديد!","soonb":"قريباً","robin":"روبين","dino":"اركض واقفز واجمع العملات واشترِ الشخصيات في المتجر.","catch":"التقط النجوم المتساقطة بالسلة.","memory":"جد كل الأزواج — 7 مراحل ضد الساعة.","button":"لعبة زر فوضوية ومضحكة — صنعها روبين!","chess":"شطرنج ضد الكمبيوتر أو ضد صديق.","tetris":"تتريس ثلاثي الأبعاد — دوّر وأسقط وامسح الصفوف!","fight":"اللعبة الكبيرة من Godot — قريباً!","button_t":"لا تضغط على الزر","fight_t":"لعبة قتال","t_dino":"عداء الديناصور","t_catch":"صائد النجوم","t_memory":"لعبة الذاكرة","t_chess":"شطرنج","t_tetris":"تتريس","t_pong":"بينغ بونغ","pong":"ضد الكمبيوتر، أو ضد صديق على نفس الجهاز، أو أونلاين برمز غرفة.","sport":"رياضة","t_zombies":"هجوم الزومبي","zombies":"انجُ عبر 20 خريطة، واقضِ على الزومبي والزعماء، وطوّر أسلحتك."},"zh":{"tag":"我的游戏平台","welcome":"欢迎!","subtitle":"我的游戏合集——全部在这里制作。选一个游戏开始玩吧!","allGames":"所有游戏","builtBy":"由 Shachar Dor-Haim 和 Robin Shmueli 制作","play":"▶ 开始","soon":"即将推出","back":"← 返回商店","settings":"设置","language":"语言","email":"电子邮箱","emailPh":"输入邮箱...","save":"保存","saved":"已保存! ✓","bg":"背景颜色","reset":"重置","close":"关闭","arcade":"街机","casual":"休闲","puzzle":"益智","strategy":"策略","newb":"新!","soonb":"即将","robin":"罗宾","dino":"奔跑、跳跃、收集金币并在商店购买角色。","catch":"用篮子接住落下的星星。","memory":"找出所有配对——7 个关卡与时间赛跑。","button":"一个混乱又搞笑的按钮游戏——由 Robin 制作!","chess":"与电脑或朋友下国际象棋。","tetris":"3D 俄罗斯方块——旋转、下落、消除行!","fight":"来自 Godot 的大型游戏——即将推出!","button_t":"别按那个按钮","fight_t":"格斗游戏","t_dino":"恐龙快跑","t_catch":"接星星","t_memory":"记忆游戏","t_chess":"国际象棋","t_tetris":"俄罗斯方块","t_pong":"乒乓球","pong":"与电脑对战、与朋友同机对战,或用房间码在线对战。","sport":"体育","t_zombies":"僵尸来袭","zombies":"闯过 20 张地图,消灭僵尸和首领,升级你的武器。"},"es":{"tag":"Mi plataforma de juegos","welcome":"¡Bienvenido!","subtitle":"Mi colección de juegos, todos creados aquí. ¡Elige un juego y juega!","allGames":"Todos los juegos","builtBy":"Creado por Shachar Dor-Haim y Robin Shmueli","play":"▶ Jugar","soon":"Pronto","back":"← Volver a la tienda","settings":"Ajustes","language":"Idioma","email":"Correo","emailPh":"Introduce el correo...","save":"Guardar","saved":"¡Guardado! ✓","bg":"Color de fondo","reset":"Restablecer","close":"Cerrar","arcade":"ARCADE","casual":"CASUAL","puzzle":"PUZLE","strategy":"ESTRATEGIA","newb":"¡NUEVO!","soonb":"PRONTO","robin":"Robin","dino":"Corre, salta, junta monedas y compra personajes en la tienda.","catch":"Atrapa estrellas que caen con la cesta.","memory":"Encuentra todas las parejas: 7 niveles contra el reloj.","button":"Un juego de botón caótico y divertido, ¡creado por Robin!","chess":"Ajedrez contra la computadora o un amigo.","tetris":"Tetris 3D: ¡gira, suelta y elimina líneas!","fight":"El gran juego de Godot: ¡muy pronto!","button_t":"No Pulses el Botón","fight_t":"Juego de Lucha","t_dino":"Dino Corredor","t_catch":"Cazaestrellas","t_memory":"Juego de Memoria","t_chess":"Ajedrez","t_tetris":"Tetris","t_pong":"Ping Pong","pong":"Contra la computadora, contra un amigo en el mismo teclado, o en línea con un código de sala.","sport":"DEPORTE","t_zombies":"Ataque Zombi","zombies":"Sobrevive a 20 mapas, acaba con zombis y jefes y mejora tus armas."},"fr":{"tag":"Ma plateforme de jeux","welcome":"Bienvenue !","subtitle":"Ma collection de jeux, tous créés ici. Choisis un jeu et joue !","allGames":"Tous les jeux","builtBy":"Créé par Shachar Dor-Haim et Robin Shmueli","play":"▶ Jouer","soon":"Bientôt","back":"← Retour à la boutique","settings":"Paramètres","language":"Langue","email":"E-mail","emailPh":"Saisir l'e-mail...","save":"Enregistrer","saved":"Enregistré ! ✓","bg":"Couleur de fond","reset":"Réinitialiser","close":"Fermer","arcade":"ARCADE","casual":"DÉTENTE","puzzle":"PUZZLE","strategy":"STRATÉGIE","newb":"NOUVEAU !","soonb":"BIENTÔT","robin":"Robin","dino":"Cours, saute, récolte des pièces et achète des personnages.","catch":"Attrape les étoiles qui tombent avec le panier.","memory":"Trouve toutes les paires — 7 niveaux contre la montre.","button":"Un jeu de bouton chaotique et drôle — créé par Robin !","chess":"Échecs contre l'ordinateur ou un ami.","tetris":"Tetris 3D — tourne, lâche et efface des lignes !","fight":"Le grand jeu de Godot — bientôt disponible !","button_t":"N'appuie pas sur le Bouton","fight_t":"Jeu de Combat","t_dino":"Dino Runner","t_catch":"Attrape-Étoiles","t_memory":"Jeu de Mémoire","t_chess":"Échecs","t_tetris":"Tetris","t_pong":"Ping Pong","pong":"Contre l’ordinateur, contre un ami sur le même clavier, ou en ligne avec un code de salon.","sport":"SPORT","t_zombies":"Attaque Zombie","zombies":"Survis à 20 cartes, élimine zombies et boss et améliore tes armes."},"pt":{"tag":"Minha plataforma de jogos","welcome":"Bem-vindo!","subtitle":"Minha coleção de jogos, todos criados aqui. Escolha um jogo e jogue!","allGames":"Todos os jogos","builtBy":"Criado por Shachar Dor-Haim e Robin Shmueli","play":"▶ Jogar","soon":"Em breve","back":"← Voltar à loja","settings":"Configurações","language":"Idioma","email":"E-mail","emailPh":"Digite o e-mail...","save":"Salvar","saved":"Salvo! ✓","bg":"Cor de fundo","reset":"Redefinir","close":"Fechar","arcade":"ARCADE","casual":"CASUAL","puzzle":"PUZZLE","strategy":"ESTRATÉGIA","newb":"NOVO!","soonb":"EM BREVE","robin":"Robin","dino":"Corra, pule, junte moedas e compre personagens na loja.","catch":"Pegue estrelas caindo com a cesta.","memory":"Encontre todos os pares — 7 níveis contra o relógio.","button":"Um jogo de botão caótico e engraçado — feito pelo Robin!","chess":"Xadrez contra o computador ou um amigo.","tetris":"Tetris 3D — gire, solte e limpe linhas!","fight":"O grande jogo do Godot — em breve!","button_t":"Não Aperte o Botão","fight_t":"Jogo de Luta","t_dino":"Dino Corredor","t_catch":"Caça-Estrelas","t_memory":"Jogo da Memória","t_chess":"Xadrez","t_tetris":"Tetris","t_pong":"Ping Pong","pong":"Contra o computador, contra um amigo no mesmo teclado, ou online com um código de sala.","sport":"ESPORTE","t_zombies":"Ataque Zumbi","zombies":"Sobreviva a 20 mapas, elimine zumbis e chefes e melhore suas armas."},"ru":{"tag":"Моя игровая платформа","welcome":"Добро пожаловать!","subtitle":"Моя коллекция игр — все созданы здесь. Выбери игру и играй!","allGames":"Все игры","builtBy":"Создано Шахаром Дор-Хаимом и Робином Шмуэли","play":"▶ Играть","soon":"Скоро","back":"← Назад в магазин","settings":"Настройки","language":"Язык","email":"Эл. почта","emailPh":"Введите эл. почту...","save":"Сохранить","saved":"Сохранено! ✓","bg":"Цвет фона","reset":"Сброс","close":"Закрыть","arcade":"АРКАДА","casual":"КЭЖУАЛ","puzzle":"ГОЛОВОЛОМКА","strategy":"СТРАТЕГИЯ","newb":"НОВОЕ!","soonb":"СКОРО","robin":"Робин","dino":"Беги, прыгай, собирай монеты и покупай персонажей в магазине.","catch":"Лови падающие звёзды корзиной.","memory":"Найди все пары — 7 уровней на время.","button":"Хаотичная и смешная игра с кнопкой — создал Робин!","chess":"Шахматы против компьютера или друга.","tetris":"3D-тетрис — вращай, бросай и убирай линии!","fight":"Большая игра на Godot — скоро!","button_t":"Не нажимай на кнопку","fight_t":"Файтинг","t_dino":"Динобег","t_catch":"Ловец звёзд","t_memory":"Игра на память","t_chess":"Шахматы","t_tetris":"Тетрис","t_pong":"Пинг-понг","pong":"Против компьютера, против друга на одной клавиатуре или онлайн по коду комнаты.","sport":"СПОРТ","t_zombies":"Атака зомби","zombies":"Выживи на 20 картах, уничтожай зомби и боссов и улучшай оружие."},"de":{"tag":"Meine Spieleplattform","welcome":"Willkommen!","subtitle":"Meine Spielesammlung — alle hier gebaut. Wähle ein Spiel und spiele!","allGames":"Alle Spiele","builtBy":"Erstellt von Shachar Dor-Haim & Robin Shmueli","play":"▶ Spielen","soon":"Bald","back":"← Zurück zum Shop","settings":"Einstellungen","language":"Sprache","email":"E-Mail","emailPh":"E-Mail eingeben...","save":"Speichern","saved":"Gespeichert! ✓","bg":"Hintergrundfarbe","reset":"Zurücksetzen","close":"Schließen","arcade":"ARCADE","casual":"CASUAL","puzzle":"PUZZLE","strategy":"STRATEGIE","newb":"NEU!","soonb":"BALD","robin":"Robin","dino":"Lauf, spring, sammle Münzen und kaufe Figuren im Shop.","catch":"Fang fallende Sterne mit dem Korb.","memory":"Finde alle Paare — 7 Level gegen die Uhr.","button":"Ein chaotisches, lustiges Knopf-Spiel — von Robin erstellt!","chess":"Schach gegen den Computer oder einen Freund.","tetris":"3D-Tetris — drehen, fallen lassen und Reihen löschen!","fight":"Das große Godot-Spiel — bald verfügbar!","button_t":"Drück nicht den Knopf","fight_t":"Kampfspiel","t_dino":"Dino-Läufer","t_catch":"Sternenfänger","t_memory":"Gedächtnisspiel","t_chess":"Schach","t_tetris":"Tetris","t_pong":"Ping Pong","pong":"Gegen den Computer, gegen einen Freund an einer Tastatur, oder online mit einem Raumcode.","sport":"SPORT","t_zombies":"Zombie-Angriff","zombies":"Überlebe 20 Karten, besiege Zombies und Bosse und verbessere deine Waffen."}};
-  const NATIVE = {"he": "עברית", "en": "English", "ar": "العربية", "zh": "中文", "es": "Español", "fr": "Français", "pt": "Português", "ru": "Русский", "de": "Deutsch"};
-  const LANGS = ["he", "en", "ar", "zh", "es", "fr", "pt", "ru", "de"];
+  const TR = {"he":{"builtBy":"נבנה על ידי שחר דור-חיים ורובין שמואלי","play":"▶ שחק","soon":"בקרוב","settings":"הגדרות","language":"שפה","email":"אימייל","emailPh":"הכנס אימייל...","save":"שמור","saved":"נשמר! ✓","bg":"רקע","close":"סגור","arcade":"ארקייד","casual":"קליל","puzzle":"חידה","strategy":"אסטרטגיה","newb":"חדש!","soonb":"בקרוב","dino":"רוץ, קפוץ, אסוף מטבעות וקנה 100 דמויות בחנות.","catch":"תפוס כוכבים נופלים עם הסלסלה.","memory":"מצא את כל הזוגות — 7 שלבים נגד השעון.","button":"משחק כפתור כאוטי ומצחיק.","chess":"שחמט נגד המחשב או מול חבר.","tetris":"טטריס — סובב, הפל ונקה שורות!","fight":"המשחק הגדול מ־Godot — בקרוב!","button_t":"אל תלחץ על הכפתור","fight_t":"משחק לחימה","t_dino":"ריצת דינוזאור","t_catch":"תופס הכוכבים","t_memory":"משחק הזיכרון","t_chess":"שחמט","t_tetris":"טטריס","t_pong":"פינג פונג","pong":"מול המחשב, מול חבר על אותו מחשב, או אונליין עם קוד חדר.","sport":"ספורט","t_zombies":"מתקפת הזומבים","zombies":"שרוד 20 מפות, חסל זומבים ובוסים ושדרג את הנשקים שלך.","survival":"הישרדות","funny":"מצחיק","th_light":"בהיר","th_dark":"כהה","t_house_design":"עיצוב בתים","house_design":"עצב חדרים ובתים לפי בקשות הלקוחות, נהל תקציב וקבל דירוג כוכבים. למחשב ועכבר.","simulation":"סימולציה"},"en":{"builtBy":"Built by Shachar Dor-Haim & Robin Shmueli","play":"▶ Play","soon":"Soon","settings":"Settings","language":"Language","email":"Email","emailPh":"Enter email...","save":"Save","saved":"Saved! ✓","bg":"Background","close":"Close","arcade":"ARCADE","casual":"CASUAL","puzzle":"PUZZLE","strategy":"STRATEGY","newb":"NEW!","soonb":"SOON","dino":"Run, jump, collect coins and buy 100 characters in the shop.","catch":"Catch falling stars with the basket.","memory":"Find all the pairs — 7 levels against the clock.","button":"A chaotic, funny button game.","chess":"Chess against the computer or a friend.","tetris":"Tetris — rotate, drop and clear lines!","fight":"The big game from Godot — coming soon!","button_t":"Don't Press the Button","fight_t":"Fighting Game","t_dino":"Dino Runner","t_catch":"Star Catcher","t_memory":"Memory Adjustment","t_chess":"Chess Prestige","t_tetris":"Tetris","t_pong":"Ping Pong","pong":"Against the computer, against a friend on one keyboard, or online with a room code.","sport":"SPORT","t_zombies":"Zombie Attack","zombies":"Survive 20 maps, take down zombies and bosses, and upgrade your weapons.","survival":"SURVIVAL","funny":"FUNNY","th_light":"Light","th_dark":"Dark","t_house_design":"House Design","house_design":"Design rooms and homes for clients, manage a budget and earn star ratings. Computer and mouse.","simulation":"SIMULATION"},"ar":{"builtBy":"بُني بواسطة شاحار دور-حاييم وروبين شموئيلي","play":"▶ العب","soon":"قريباً","settings":"الإعدادات","language":"اللغة","email":"البريد الإلكتروني","emailPh":"أدخل البريد الإلكتروني...","save":"حفظ","saved":"تم الحفظ! ✓","bg":"الخلفية","close":"إغلاق","arcade":"أركيد","casual":"عادي","puzzle":"ألغاز","strategy":"استراتيجية","newb":"جديد!","soonb":"قريباً","dino":"اركض واقفز واجمع العملات واشترِ 100 شخصية من المتجر.","catch":"التقط النجوم المتساقطة بالسلة.","memory":"جد كل الأزواج — 7 مراحل ضد الساعة.","button":"لعبة زر فوضوية ومضحكة.","chess":"شطرنج ضد الكمبيوتر أو ضد صديق.","tetris":"تتريس — دوّر وأسقط وامسح الصفوف!","fight":"اللعبة الكبيرة من Godot — قريباً!","button_t":"لا تضغط على الزر","fight_t":"لعبة قتال","t_dino":"عداء الديناصور","t_catch":"صائد النجوم","t_memory":"لعبة الذاكرة","t_chess":"شطرنج","t_tetris":"تتريس","t_pong":"بينغ بونغ","pong":"ضد الكمبيوتر، أو ضد صديق على نفس الجهاز، أو أونلاين برمز غرفة.","sport":"رياضة","t_zombies":"هجوم الزومبي","zombies":"انجُ في 20 خريطة، واقضِ على الزومبي والزعماء، وطوّر أسلحتك.","survival":"بقاء","funny":"مضحك","th_light":"فاتح","th_dark":"داكن","t_house_design":"تصميم المنازل","house_design":"صمّم غرفاً ومنازل حسب طلبات العملاء، وأدر الميزانية واحصل على تقييم بالنجوم. للكمبيوتر والفأرة.","simulation":"محاكاة"},"es":{"builtBy":"Creado por Shachar Dor-Haim y Robin Shmueli","play":"▶ Jugar","soon":"Pronto","settings":"Ajustes","language":"Idioma","email":"Correo","emailPh":"Introduce el correo...","save":"Guardar","saved":"¡Guardado! ✓","bg":"Fondo","close":"Cerrar","arcade":"ARCADE","casual":"CASUAL","puzzle":"PUZLE","strategy":"ESTRATEGIA","newb":"¡NUEVO!","soonb":"PRONTO","dino":"Corre, salta, junta monedas y compra 100 personajes en la tienda.","catch":"Atrapa estrellas que caen con la cesta.","memory":"Encuentra todas las parejas: 7 niveles contra el reloj.","button":"Un juego de botón caótico y divertido.","chess":"Ajedrez contra la computadora o un amigo.","tetris":"Tetris: ¡gira, suelta y elimina líneas!","fight":"El gran juego de Godot: ¡muy pronto!","button_t":"No Pulses el Botón","fight_t":"Juego de Lucha","t_dino":"Dino Corredor","t_catch":"Cazaestrellas","t_memory":"Juego de Memoria","t_chess":"Ajedrez","t_tetris":"Tetris","t_pong":"Ping Pong","pong":"Contra la computadora, contra un amigo en el mismo teclado, o en línea con un código de sala.","sport":"DEPORTE","t_zombies":"Ataque Zombi","zombies":"Sobrevive a 20 mapas, acaba con zombis y jefes, y mejora tus armas.","survival":"SUPERVIVENCIA","funny":"HUMOR","th_light":"Claro","th_dark":"Oscuro","t_house_design":"Diseño de casas","house_design":"Diseña habitaciones y casas para tus clientes, administra el presupuesto y gana estrellas. Para ordenador y ratón.","simulation":"SIMULACIÓN"},"fr":{"builtBy":"Créé par Shachar Dor-Haim et Robin Shmueli","play":"▶ Jouer","soon":"Bientôt","settings":"Paramètres","language":"Langue","email":"E-mail","emailPh":"Saisir l'e-mail...","save":"Enregistrer","saved":"Enregistré ! ✓","bg":"Arrière-plan","close":"Fermer","arcade":"ARCADE","casual":"DÉTENTE","puzzle":"PUZZLE","strategy":"STRATÉGIE","newb":"NOUVEAU !","soonb":"BIENTÔT","dino":"Cours, saute, récolte des pièces et achète 100 personnages.","catch":"Attrape les étoiles qui tombent avec le panier.","memory":"Trouve toutes les paires — 7 niveaux contre la montre.","button":"Un jeu de bouton chaotique et drôle.","chess":"Échecs contre l'ordinateur ou un ami.","tetris":"Tetris — tourne, lâche et efface des lignes !","fight":"Le grand jeu de Godot — bientôt disponible !","button_t":"N'appuie pas sur le Bouton","fight_t":"Jeu de Combat","t_dino":"Dino Runner","t_catch":"Attrape-Étoiles","t_memory":"Jeu de Mémoire","t_chess":"Échecs","t_tetris":"Tetris","t_pong":"Ping Pong","pong":"Contre l’ordinateur, contre un ami sur le même clavier, ou en ligne avec un code de salon.","sport":"SPORT","t_zombies":"L'attaque des zombies","zombies":"Survis à 20 cartes, élimine zombies et boss, et améliore tes armes.","survival":"SURVIE","funny":"HUMOUR","th_light":"Clair","th_dark":"Sombre","t_house_design":"Décoration de maisons","house_design":"Aménage des pièces et des maisons pour tes clients, gère un budget et gagne des étoiles. Ordinateur et souris.","simulation":"SIMULATION"},"pt":{"builtBy":"Criado por Shachar Dor-Haim e Robin Shmueli","play":"▶ Jogar","soon":"Em breve","settings":"Configurações","language":"Idioma","email":"E-mail","emailPh":"Digite o e-mail...","save":"Salvar","saved":"Salvo! ✓","bg":"Fundo","close":"Fechar","arcade":"ARCADE","casual":"CASUAL","puzzle":"PUZZLE","strategy":"ESTRATÉGIA","newb":"NOVO!","soonb":"EM BREVE","dino":"Corra, pule, junte moedas e compre 100 personagens na loja.","catch":"Pegue estrelas caindo com a cesta.","memory":"Encontre todos os pares — 7 níveis contra o relógio.","button":"Um jogo de botão caótico e engraçado.","chess":"Xadrez contra o computador ou um amigo.","tetris":"Tetris — gire, solte e limpe linhas!","fight":"O grande jogo do Godot — em breve!","button_t":"Não Aperte o Botão","fight_t":"Jogo de Luta","t_dino":"Dino Corredor","t_catch":"Caça-Estrelas","t_memory":"Jogo da Memória","t_chess":"Xadrez","t_tetris":"Tetris","t_pong":"Ping Pong","pong":"Contra o computador, contra um amigo no mesmo teclado, ou online com um código de sala.","sport":"ESPORTE","t_zombies":"Ataque Zumbi","zombies":"Sobreviva a 20 mapas, elimine zumbis e chefões e melhore suas armas.","survival":"SOBREVIVÊNCIA","funny":"HUMOR","th_light":"Claro","th_dark":"Escuro","t_house_design":"Design de casas","house_design":"Decore quartos e casas para os clientes, administre um orçamento e ganhe estrelas. Computador e mouse.","simulation":"SIMULAÇÃO"},"ru":{"builtBy":"Создано Шахаром Дор-Хаимом и Робином Шмуэли","play":"▶ Играть","soon":"Скоро","settings":"Настройки","language":"Язык","email":"Эл. почта","emailPh":"Введите эл. почту...","save":"Сохранить","saved":"Сохранено! ✓","bg":"Фон","close":"Закрыть","arcade":"АРКАДА","casual":"КЭЖУАЛ","puzzle":"ГОЛОВОЛОМКА","strategy":"СТРАТЕГИЯ","newb":"НОВОЕ!","soonb":"СКОРО","dino":"Беги, прыгай, собирай монеты и покупай 100 персонажей в магазине.","catch":"Лови падающие звёзды корзиной.","memory":"Найди все пары — 7 уровней на время.","button":"Хаотичная и смешная игра с кнопкой.","chess":"Шахматы против компьютера или друга.","tetris":"Тетрис — вращай, бросай и убирай линии!","fight":"Большая игра на Godot — скоро!","button_t":"Не нажимай на кнопку","fight_t":"Файтинг","t_dino":"Динобег","t_catch":"Ловец звёзд","t_memory":"Игра на память","t_chess":"Шахматы","t_tetris":"Тетрис","t_pong":"Пинг-понг","pong":"Против компьютера, против друга на одной клавиатуре или онлайн по коду комнаты.","sport":"СПОРТ","t_zombies":"Нашествие зомби","zombies":"Выживи на 20 картах, уничтожай зомби и боссов и улучшай оружие.","survival":"ВЫЖИВАНИЕ","funny":"ЮМОР","th_light":"Светлый","th_dark":"Тёмный","t_house_design":"Дизайн домов","house_design":"Оформляй комнаты и дома по запросам клиентов, следи за бюджетом и получай звёзды. Компьютер и мышь.","simulation":"СИМУЛЯТОР"},"de":{"builtBy":"Erstellt von Shachar Dor-Haim & Robin Shmueli","play":"▶ Spielen","soon":"Bald","settings":"Einstellungen","language":"Sprache","email":"E-Mail","emailPh":"E-Mail eingeben...","save":"Speichern","saved":"Gespeichert! ✓","bg":"Hintergrund","close":"Schließen","arcade":"ARCADE","casual":"CASUAL","puzzle":"PUZZLE","strategy":"STRATEGIE","newb":"NEU!","soonb":"BALD","dino":"Lauf, spring, sammle Münzen und kaufe 100 Figuren im Shop.","catch":"Fang fallende Sterne mit dem Korb.","memory":"Finde alle Paare — 7 Level gegen die Uhr.","button":"Ein chaotisches, lustiges Knopf-Spiel.","chess":"Schach gegen den Computer oder einen Freund.","tetris":"Tetris — drehen, fallen lassen und Reihen löschen!","fight":"Das große Godot-Spiel — bald verfügbar!","button_t":"Drück nicht den Knopf","fight_t":"Kampfspiel","t_dino":"Dino-Läufer","t_catch":"Sternenfänger","t_memory":"Gedächtnisspiel","t_chess":"Schach","t_tetris":"Tetris","t_pong":"Ping Pong","pong":"Gegen den Computer, gegen einen Freund an einer Tastatur, oder online mit einem Raumcode.","sport":"SPORT","t_zombies":"Zombie-Angriff","zombies":"Überlebe 20 Karten, besiege Zombies und Bosse und verbessere deine Waffen.","survival":"ÜBERLEBEN","funny":"LUSTIG","th_light":"Hell","th_dark":"Dunkel","t_house_design":"Häuser gestalten","house_design":"Gestalte Räume und Häuser nach Kundenwünschen, plane dein Budget und verdiene Sterne. Computer und Maus.","simulation":"SIMULATION"}};
+  const NATIVE = {"he": "עברית", "en": "English", "ar": "العربية", "es": "Español", "fr": "Français", "pt": "Português", "ru": "Русский", "de": "Deutsch"};
+  const LANGS = ["he", "en", "ar", "es", "fr", "pt", "ru", "de"];
   const RTL = ['he','ar'];
-  const BADGE = {'ARCADE':'arcade','CASUAL':'casual','PUZZLE':'puzzle','STRATEGY':'strategy','חדש!':'newb','SOON':'soonb','רובין':'robin','ספורט':'sport'};
-  const GTITLE = {dino:'t_dino', catch:'t_catch', memory:'t_memory', chess:'t_chess', tetris:'t_tetris', button:'button_t', soon:'fight_t', pong:'t_pong', zombies:'t_zombies'};
-  const GDESC = {dino:'dino', catch:'catch', memory:'memory', button:'button', chess:'chess', tetris:'tetris', soon:'fight', pong:'pong', zombies:'zombies'};
+  // סוג המשחק על הכרטיס (type) → מפתח תרגום. בשבועיים הראשונים אחרי added כתוב "חדש!" במקום.
+  const TYPE = {'ARCADE':'arcade','CASUAL':'casual','PUZZLE':'puzzle','STRATEGY':'strategy','SPORT':'sport','SURVIVAL':'survival','FUNNY':'funny','SIMULATION':'simulation','SOON':'soonb'};
+  const NEW_DAYS = 14;
+  function isNew(g){
+    if(!g.added) return false;
+    const d = new Date(g.added + 'T00:00:00');
+    if(isNaN(d)) return false;
+    const days = (Date.now() - d.getTime()) / 86400000;
+    return days >= 0 && days < NEW_DAYS;
+  }
+  function badgeText(g){
+    if(isNew(g)) return t('newb');
+    return TYPE[g.type] ? t(TYPE[g.type]) : (g.type || '');
+  }
+  const GTITLE = {'house-design':'t_house_design', zombies:'t_zombies', dino:'t_dino', catch:'t_catch', memory:'t_memory', chess:'t_chess', tetris:'t_tetris', button:'button_t', soon:'fight_t', pong:'t_pong'};
+  const GDESC = {'house-design':'house_design', zombies:'zombies', dino:'dino', catch:'catch', memory:'memory', button:'button', chess:'chess', tetris:'tetris', soon:'fight', pong:'pong'};
   const LSK = 'flrot:';
   const save = (k,v)=>{ try{ localStorage.setItem(LSK+k,v); }catch(e){} };
   const load = (k)=>{ try{ return localStorage.getItem(LSK+k); }catch(e){ return null; } };
@@ -146,18 +163,14 @@ function openExternal(g) {
     '.set-sec{margin-bottom:20px;}'+
     '.set-sec h3{font-size:15px;margin:0 0 10px;color:#4fd1c5;}'+
     '.set-langs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}'+
-    '.set-lang-btn{background:#172230;border:1px solid #2a3b4f;color:#e8eef5;padding:11px 8px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:14px;font-weight:600;transition:.12s;}'+
-    '.set-lang-btn:hover{border-color:#4fd1c5;}'+
-    '.set-lang-btn.active{background:#4fd1c5;color:#0d1620;border-color:#4fd1c5;}'+
+    '.set-lang-btn,.set-theme-btn{background:#172230;border:1px solid #2a3b4f;color:#e8eef5;padding:11px 8px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:14px;font-weight:600;transition:.12s;}'+
+    '.set-lang-btn:hover,.set-theme-btn:hover{border-color:#4fd1c5;}'+
+    '.set-lang-btn.active,.set-theme-btn.active{background:#4fd1c5;color:#0d1620;border-color:#4fd1c5;}'+
     '.set-email-row{display:flex;gap:8px;flex-wrap:wrap;}'+
     '#set-email{flex:1;min-width:160px;background:#172230;border:1px solid #2a3b4f;color:#e8eef5;padding:11px;border-radius:8px;font-family:inherit;font-size:15px;}'+
     '#set-email-save{background:#ffd166;color:#0d1620;border:none;padding:11px 18px;border-radius:8px;font-weight:800;cursor:pointer;font-family:inherit;}'+
     '#set-email-status{color:#4fd1c5;font-size:13px;margin-top:6px;min-height:16px;}'+
-    '.set-colors{display:grid;grid-template-columns:repeat(auto-fill,minmax(30px,1fr));gap:6px;max-height:220px;overflow-y:auto;padding:6px;background:rgba(0,0,0,0.22);border-radius:8px;}'+
-    '.set-sw{aspect-ratio:1;border:2px solid transparent;border-radius:6px;cursor:pointer;padding:0;}'+
-    '.set-sw:hover{transform:scale(1.12);}'+
-    '.set-sw.active{border-color:#fff;box-shadow:0 0 0 2px #4fd1c5;}'+
-    '#set-reset{margin-top:10px;background:#2a3b4f;color:#e8eef5;border:none;padding:9px 16px;border-radius:8px;cursor:pointer;font-family:inherit;font-weight:600;}';
+    '.set-themes{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}';
   document.head.appendChild(st);
 
   // ---------- gear button ----------
@@ -174,7 +187,7 @@ function openExternal(g) {
       '<div class="set-head"><h2 id="set-title"></h2><button id="set-close">×</button></div>'+
       '<div class="set-sec"><h3 id="set-lang-h"></h3><div class="set-langs" id="set-langs"></div></div>'+
       '<div class="set-sec"><h3 id="set-email-h"></h3><div class="set-email-row"><input id="set-email" type="email"><button id="set-email-save"></button></div><div id="set-email-status"></div></div>'+
-      '<div class="set-sec"><h3 id="set-bg-h"></h3><div class="set-colors" id="set-colors"></div><button id="set-reset"></button></div>'+
+      '<div class="set-sec"><h3 id="set-bg-h"></h3><div class="set-themes" id="set-themes"></div></div>'+
     '</div>';
   document.body.appendChild(ov);
 
@@ -187,31 +200,32 @@ function openExternal(g) {
     langsBox.appendChild(b);
   });
 
-  // ---------- color swatches (130+) ----------
-  const colorsBox = ov.querySelector('#set-colors');
-  const COLORS = [];
-  for(let l=24; l<=82; l+=19){                 // 4 brightness rows
-    for(let h=0; h<360; h+=12){                 // 30 hues per row = 120
-      COLORS.push('hsl('+h+','+(l<45?48:64)+'%,'+l+'%)');
-    }
-  }
-  for(let g=12; g<=246; g+=18) COLORS.push('rgb('+g+','+g+','+g+')');  // grayscale ~14
-  COLORS.forEach(col=>{
-    const sw = document.createElement('button');
-    sw.className = 'set-sw'; sw.style.background = col; sw.dataset.col = col;
-    sw.onclick = ()=> setBg(col);
-    colorsBox.appendChild(sw);
+  // ---------- רקע: רק בהיר (לבן) או כהה (שחור) ----------
+  const THEMES = [{ id:'light', icon:'☀️' }, { id:'dark', icon:'🌙' }];
+  const themesBox = ov.querySelector('#set-themes');
+  THEMES.forEach(th=>{
+    const b = document.createElement('button');
+    b.className = 'set-theme-btn'; b.dataset.theme = th.id;
+    b.innerHTML = '<span>'+th.icon+'</span> <span class="set-theme-name"></span>';
+    b.onclick = ()=> setTheme(th.id);
+    themesBox.appendChild(b);
   });
-
-  function setBg(col){
-    document.body.style.background = col;
-    save('bg', col);
-    ov.querySelectorAll('.set-sw').forEach(s=> s.classList.toggle('active', s.dataset.col===col));
+  function setTheme(id){
+    const dark = id === 'dark';
+    document.body.classList.toggle('theme-dark', dark);
+    save('theme', dark ? 'dark' : 'light');
+    ov.querySelectorAll('.set-theme-btn').forEach(b=> b.classList.toggle('active', b.dataset.theme === (dark ? 'dark' : 'light')));
   }
-  function resetBg(){
-    document.body.style.background = '';
-    save('bg', '');
-    ov.querySelectorAll('.set-sw').forEach(s=> s.classList.remove('active'));
+  // עד 2026-10-28 אפשר היה לבחור כל צבע (נשמר ב-flrot:bg). מי שבחר אז צבע כהה עובר לכהה, כל השאר לבהיר.
+  function isDarkColor(col){
+    const probe = document.createElement('i');
+    probe.style.color = col;
+    document.body.appendChild(probe);
+    const m = getComputedStyle(probe).color.match(/[\d.]+/g);
+    probe.remove();
+    if(!m || m.length < 3) return false;
+    const L = (0.2126*m[0] + 0.7152*m[1] + 0.0722*m[2]) / 255;
+    return L < 0.5;
   }
 
   // ---------- email ----------
@@ -223,7 +237,6 @@ function openExternal(g) {
     emailStatus.textContent = t('saved');
     setTimeout(()=>{ emailStatus.textContent=''; }, 2500);
   };
-  ov.querySelector('#set-reset').onclick = resetBg;
 
   // ---------- open/close ----------
   gear.onclick = ()=> ov.classList.add('open');
@@ -238,7 +251,7 @@ function openExternal(g) {
     setId('#set-email-h', t('email'));
     setId('#set-bg-h', t('bg'));
     setId('#set-email-save', t('save'));
-    setId('#set-reset', t('reset'));
+    ov.querySelectorAll('.set-theme-name').forEach(n=>{ n.textContent = t('th_' + n.parentNode.dataset.theme); });
     emailInput.placeholder = t('emailPh');
   }
 
@@ -250,12 +263,7 @@ function openExternal(g) {
     document.documentElement.lang = lang;
     document.body.style.direction = rtl?'rtl':'ltr';
     const set = (sel,val)=>{ const e=document.querySelector(sel); if(e) e.textContent=val; };
-    set('.hero .tag', t('tag'));
-    set('.hero h1', t('welcome'));
-    set('.hero p', t('subtitle'));
-    set('.section-title', t('allGames'));
-    set('.site-foot', t('builtBy')+' · Floating rotation 2026');
-    const back = document.getElementById('backBtn'); if(back) back.textContent = t('back');
+    set('.site-foot', t('builtBy')+' · URotation 2026');
     document.querySelectorAll('.gcard').forEach(card=>{
       const gid = card.dataset.gid; if(!gid) return;
       const g = GAMES.find(x=>x.id===gid); if(!g) return;
@@ -263,7 +271,7 @@ function openExternal(g) {
       if(h) h.textContent = GTITLE[gid] ? t(GTITLE[gid]) : g.title;
       if(p) p.textContent = GDESC[gid] ? t(GDESC[gid]) : g.desc;
       if(pl) pl.textContent = g.soon ? t('soon') : t('play');
-      if(bd) bd.textContent = BADGE[g.badge] ? t(BADGE[g.badge]) : g.badge;
+      if(bd) bd.textContent = badgeText(g);
     });
     updateSettingsLabels();
     ov.querySelectorAll('.set-lang-btn').forEach(b=> b.classList.toggle('active', b.dataset.lang===lang));
@@ -272,7 +280,12 @@ function openExternal(g) {
   }
 
   // ---------- init: restore saved prefs ----------
-  const savedBg = load('bg');
-  if(savedBg){ document.body.style.background = savedBg; ov.querySelectorAll('.set-sw').forEach(s=> s.classList.toggle('active', s.dataset.col===savedBg)); }
+  let theme = load('theme');
+  if(theme !== 'light' && theme !== 'dark'){
+    const old = load('bg');
+    theme = old && isDarkColor(old) ? 'dark' : 'light';
+  }
+  try{ localStorage.removeItem(LSK+'bg'); }catch(e){}
+  setTheme(theme);
   applyLanguage(curLang);
 })();

@@ -3,70 +3,125 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Floating rotation</title>
-<link rel="stylesheet" href="style.css">
+<title>URotation</title>
+<link rel="icon" href="favicon.ico?v=2" sizes="16x16 32x32 48x48">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=2">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
+<!-- מה מופיע כששולחים קישור לאתר (וואטסאפ, טלגרם, פייסבוק) -->
+<meta name="description" content="משחקים חינמיים, התקנות חינמיות ועוד — הכל במקום אחד.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="URotation">
+<meta property="og:title" content="URotation">
+<meta property="og:description" content="משחקים חינמיים, התקנות חינמיות ועוד — הכל במקום אחד.">
+<meta property="og:url" content="https://floatingrotations.com/">
+<meta property="og:image" content="https://floatingrotations.com/og-logo.jpg?v=2">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="URotation">
+<meta property="og:locale" content="he_IL">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap">
+<link rel="stylesheet" href="style.css?v=hub-17">
 </head>
-<body>
+<body class="site">
 
 <!-- ============ החנות (מסך ראשי) ============ -->
 <div id="store">
-  <header class="site-head">
-    <div class="logo">Floating<span>rotation</span></div>
-  </header>
+  <div class="site-body">
+    <!-- הקטגוריות: פס לכל אורך הצד הימני, בכל השפות. כפתור ☰ מסתיר אותו (נבנה ב-hub.js) -->
+    <aside class="side" id="side">
+      <div class="side-head">
+        <span class="side-title" id="sideTitle">קטגוריות</span>
+        <button class="side-close" id="sideClose">×</button>
+      </div>
+      <nav class="side-nav" id="sideNav"></nav>
+    </aside>
+    <div class="side-shade" id="sideShade"></div>
 
-  <div class="hero">
-    <span class="tag">פלטפורמת המשחקים שלי</span>
-    <h1>ברוך הבא!</h1>
-    <p>אוסף המשחקים שלי — כולם נבנו כאן. בחר משחק ושחק!</p>
+    <div class="site-col">
+      <header class="site-head">
+        <button class="side-toggle" id="sideToggle" aria-controls="side" aria-expanded="true">☰</button>
+        <a class="logo" id="homeLink" href="./"><img class="logo-icon" src="logo-icon.png?v=2" alt=""><span>U</span>Rotation</a>
+      </header>
+
+      <main class="site-main">
+        <!-- דף הבית: הבאנר של האתר למעלה. מתחתיו יופיעו בעתיד הדברים בתשלום -->
+        <section class="view-home" id="view-home">
+          <img class="home-banner" src="banner-urotation.webp" alt="URotation" width="1672" height="941" fetchpriority="high">
+        </section>
+
+        <!-- קטגוריה: משחקים חינמיים -->
+        <section class="cat-sec" id="cat-games" hidden>
+          <div class="cat-head"></div>
+          <div class="grid" id="grid"></div>
+        </section>
+
+        <!-- קטגוריה: התקנות חינמיות -->
+        <section class="cat-sec" id="cat-apps" hidden>
+          <div class="cat-head"></div>
+          <div class="grid dl-grid" id="dlGrid"></div>
+        </section>
+
+        <!-- מסך משחק (#play/<id>): המשחק במסגרת, פס עם השם והכפתורים, ועוד משחקים (hub.js) -->
+        <section class="game-view" id="gameHost" hidden>
+          <div class="player" id="player">
+            <div id="gameMount"></div>
+          </div>
+          <div class="player-bar">
+            <div class="pb-info">
+              <span class="pb-thumb" id="gameThumb"></span>
+              <div class="pb-text">
+                <h1 id="gameTitle"></h1>
+                <span class="pb-type" id="gameType"></span>
+              </div>
+            </div>
+            <div class="pb-actions">
+              <button class="pb-btn" id="fullBtn">⛶</button>
+              <button class="pb-btn" id="backBtn">✕</button>
+            </div>
+          </div>
+          <div class="more-games">
+            <h2 id="moreTitle">עוד משחקים</h2>
+            <div class="more-row" id="moreRow"></div>
+          </div>
+        </section>
+
+        <footer class="site-foot">נבנה על ידי שחר דור-חיים ורובין שמואלי · URotation 2026</footer>
+      </main>
+    </div>
   </div>
-
-  <div class="section-title">כל המשחקים</div>
-  <div class="grid" id="grid"></div>
-
-  <div class="section-title" id="dlSectionTitle">להורדה</div>
-  <div class="grid" id="dlGrid"></div>
-
-  <footer class="site-foot">נבנה על ידי שחר דור-חיים ורובין שמואלי · Floating rotation 2026</footer>
 </div>
 
-<!-- ============ מסך המשחק ============ -->
-<div id="gameHost">
-  <div class="host-bar">
-    <button id="backBtn">← חזרה לחנות</button>
-    <span id="gameTitle"></span>
-  </div>
-  <div id="gameMount"></div>
-</div>
 
 <!-- ============ הקבצים ============ -->
-<!-- חשוב: הסדר חשוב! קודם הנתונים, אחר כך המשחקים, ובסוף הפלטפורמה -->
+<!-- חשוב: הסדר חשוב! קודם המשחקים ובסוף הפלטפורמה -->
 
-<!-- 1. הדמויות והתמונות (קובץ כבד — לא נוגעים בו) -->
-<script src="sprites.js"></script>
-
-<!-- 2. קטלוג הדמויות (שמות ומחירים) -->
-<script src="characters.js"></script>
-
-<!-- 3. המשחקים -->
+<!-- 1. המשחקים -->
 <!-- PeerJS — למשחק שחמט מרחוק (חינם, בלי שרת) -->
 <!-- defer: השחמט צריך אותו רק כשלוחצים "צור חדר"/"הצטרף". בלי זה unpkg איטי (למשל ברשת של בית ספר) השאיר את כל החנות ריקה עד שנטען -->
 <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js" defer></script>
-<script src="game-dino.js"></script>
-<script src="game-star-catcher.js"></script>
-<script src="game-memory.js"></script>
-<script src="game-chess.js"></script>
-<script src="game-tetris.js"></script>
-<!-- 4. הפלטפורמה (חייב להיות אחרון!) -->
-<script src="platform.js?v=zombie-thumb-2"></script>
+<script src="game-dino-skins.js?v=1"></script>
+<script src="game-dino.js?v=10"></script>
+<script src="game-star-catcher.js?v=4"></script>
+<script src="game-memory.js?v=3"></script>
+<script src="game-chess.js?v=3"></script>
+<script src="game-tetris.js?v=4"></script>
+<!-- 2. הפלטפורמה (חייב להיות אחרון!) -->
+<script src="platform.js?v=hub-19"></script>
 
-<!-- 5. ההדגמה המונפשת (חייבת להיטען לפני downloads.js) -->
+<!-- 3. ההדגמה המונפשת (חייבת להיטען לפני downloads.js) -->
 <script src="demo.js"></script>
 
-<!-- 6. אזור ההורדות (אחרי הפלטפורמה — מאזין לשינוי שפה) -->
-<script src="downloads.js?v=ink-5"></script>
+<!-- 4. אזור ההורדות (אחרי הפלטפורמה — מאזין לשינוי שפה) -->
+<script src="downloads.js?v=hub-2"></script>
 
-<!-- 6. הזרקת כתובת ה-bookmarklet לקישור (חייב להיות אחרי downloads.js) -->
+<!-- 5. הזרקת כתובת ה-bookmarklet לקישור (חייב להיות אחרי downloads.js) -->
 <script src="bookmarklet.js"></script>
+
+<!-- 6. הקטגוריות: ניווט, אריחים וכותרות (אחרון — סופר את הכרטיסים של כולם) -->
+<script src="hub.js?v=hub-8"></script>
 
 </body>
 </html>

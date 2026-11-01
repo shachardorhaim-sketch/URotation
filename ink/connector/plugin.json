@@ -1,9 +1,9 @@
 {
   "name": "floating-ink",
   "displayName": "Floating Ink",
-  "version": "1.15.0",
-  "description": "Work with Claude inside Floating Ink, the word processor from floatingrotations.com: Claude reads, writes and edits your documents, builds presentations and spreadsheets (with charts), and draws pictures and animations, while you watch. Open Floating Ink, click the robot button and turn on \"Connect AI\".",
-  "author": { "name": "Floating rotation", "url": "https://floatingrotations.com" },
+  "version": "1.18.0",
+  "description": "Work with Claude inside Floating Ink, the word processor from floatingrotations.com: Claude reads, writes and edits your documents, builds presentations and spreadsheets (with charts), draws pictures and animations, and turns your stories into comics, while you watch. Open Floating Ink, click the robot button and turn on \"Connect AI\".",
+  "author": { "name": "URotation", "url": "https://floatingrotations.com" },
   "homepage": "https://floatingrotations.com/ink/",
   "license": "MIT",
   "keywords": ["writing", "documents", "word processor", "drawing", "floating ink"],
