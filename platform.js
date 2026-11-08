@@ -21,12 +21,15 @@ function closeGame() {
   gameMount.innerHTML = '';
 }
 
-// משחק שחי בכתובת אחרת ומוטמע בתוך הפלטפורמה.
+// משחק שחי בכתובת אחרת ומוטמע בתוך הפלטפורמה. הוא על מקור אחר, אז את השפה שלנו מ-localStorage
+// הוא לא רואה, והיא עוברת אליו ב-?lang=
 // minH — למשחק שהעמוד שלו לא יורד מתחת לגובה הזה: המסגרת מוקטנת כדי שייכנס כולו, בלי פס גלילה.
 function mountIframe(url, minH) {
   return function (host) {
     const f = document.createElement('iframe');
-    f.src = url;
+    let lang = 'he';
+    try { lang = localStorage.getItem('flrot:lang') || 'he'; } catch (e) {}
+    f.src = url + (url.includes('?') ? '&' : '?') + 'lang=' + encodeURIComponent(lang);
     f.title = 'game';
     f.allow = 'autoplay; fullscreen; gamepad; clipboard-write; web-share';
     f.style.cssText = 'width:100%;height:100%;border:0;display:block;background:#0d1620';
@@ -105,7 +108,8 @@ GAMES.forEach(g => {
     const open = () => window.flrotPlay(g.id);
     card.querySelector('.gplay').onclick = open;
     card.onclick = e => { if (e.target.tagName!=='BUTTON') open(); };
-    card.onkeydown = e => { if (e.key==='Enter') open(); };
+    // Enter על כפתור "שחק" כבר מפעיל את ה-onclick שלו — בלי הבדיקה המשחק נפתח פעמיים ומופע אחד לא נסגר
+    card.onkeydown = e => { if (e.key==='Enter' && e.target.tagName!=='BUTTON') open(); };
   }
   grid.appendChild(card);
 });
