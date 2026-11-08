@@ -6164,7 +6164,7 @@ const CSS = `
   #sheetPrint table{break-inside:auto}
   #sheetPrint tr{break-inside:avoid;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   #sheetPrint td{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .sh-print-sheet{break-after:page}
+  .sh-print-sheet{break-after:page;padding:10mm;box-sizing:border-box;-webkit-box-decoration-break:clone;box-decoration-break:clone}
   .sh-print-sheet:last-child{break-after:auto}
   .sh-print-sheet h2{font:700 13pt Arial,sans-serif;margin:0 0 6pt}
 }
@@ -7832,7 +7832,7 @@ async function sheetPrint() {
   if (WS.fr) { const th = h('thead'), rows = [...t.tBodies[0].rows].slice(0, WS.fr); for (const r of rows) th.append(r); t.insertBefore(th, t.tBodies[0]); }
   if (W > room) t.style.zoom = String(room / W);
   const rule = $('#pageRule'), before = rule.textContent;
-  rule.textContent = `@page{size:A4 ${land ? 'landscape' : 'portrait'};margin:10mm}`;
+  rule.textContent = `@page{size:A4 ${land ? 'landscape' : 'portrait'};margin:0}`;
   V.print.textContent = '';
   V.print.append(h('div', { class: 'sh-print-sheet', dir: WS.dir }, t, ...chartEls(WS, room).map(b => h('div', { style: { marginTop: '14px', breakInside: 'avoid' } }, b))));
   document.documentElement.classList.add('sheet-print');

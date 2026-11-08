@@ -1028,7 +1028,7 @@ body.aud{margin:0;height:100vh;background:#000;display:grid;place-items:center;o
   #appbar,#tabs,#ribbon,#status,#drawer,#side,#banner,#guides,#loading,#toasts,#pop,#modals,#imgBar,#focusExit,#lock{display:none!important}
   #work{display:block}
   #desk{overflow:visible;padding:0}
-  #sheet{width:auto!important;min-height:0!important;padding:0!important;margin:0;box-shadow:none;border-radius:0;zoom:1!important;background-image:none!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #sheet{width:auto!important;min-height:0!important;padding:var(--pm,20mm)!important;box-sizing:border-box;-webkit-box-decoration-break:clone;box-decoration-break:clone;margin:0;box-shadow:none;border-radius:0;zoom:1!important;background-image:none!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   #editor{min-height:0}
   .doc hr.page-break{break-after:page;border:0;margin:0}
   .doc hr.page-break::after{display:none}
@@ -2830,7 +2830,8 @@ function applyPage() {
   ed.style.setProperty('--doc-font', `"${p.font}"`);
   ed.style.setProperty('--doc-size', p.fontSize + 'pt');
   ed.style.setProperty('--doc-lh', String(p.lh));
-  $('#pageRule').textContent = `@page{size:${p.size === 'Letter' ? 'letter' : p.size} ${p.orient};margin:${m}mm}`;
+  $('#pageRule').textContent = `@page{size:${p.size === 'Letter' ? 'letter' : p.size} ${p.orient};margin:0}`;
+  sheet.style.setProperty('--pm', m + 'mm');
   for (const b of $$('[data-page]')) { const [k, v] = b.dataset.page.split(':'); b.classList.toggle('on', String(p[k]) === v); }
   for (const b of $$('.pc')) b.classList.toggle('on', b.dataset.arg === p.color);
   applyZoom();
