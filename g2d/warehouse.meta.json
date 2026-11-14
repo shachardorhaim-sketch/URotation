@@ -1,0 +1,20 @@
+{
+  "id": "warehouse",
+  "v": 1,
+  "order": 24,
+  "type": "PUZZLE",
+  "added": "2026-11-14",
+  "bg": "#1b2531",
+  "icon": "📦",
+  "names": { "he": "המחסן", "en": "Warehouse", "ar": "المستودع", "es": "El Almacén", "fr": "L'Entrepôt", "pt": "O Armazém", "ru": "Склад", "de": "Das Lager" },
+  "descs": {
+    "he": "דחוף ארגזים אל הנקודות בלי להיתקע. 40 שלבים מתחממים, עם ביטול צעד.",
+    "en": "Push the crates onto the spots without getting stuck. 40 levels with undo.",
+    "ar": "ادفع الصناديق إلى البقع دون أن تعلق. 40 مرحلة مع التراجع.",
+    "es": "Empuja las cajas a su sitio sin atascarte. 40 niveles con deshacer.",
+    "fr": "Pousse les caisses sur les cases sans te coincer. 40 niveaux avec annulation.",
+    "pt": "Empurre as caixas até os pontos sem travar. 40 fases com desfazer.",
+    "ru": "Толкай ящики на метки и не застревай. 40 уровней с отменой хода.",
+    "de": "Schiebe die Kisten auf die Punkte, ohne festzustecken. 40 Level mit Zurück."
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "id": "tower-defense",
+  "v": 1,
+  "order": 33,
+  "type": "STRATEGY",
+  "added": "2026-11-14",
+  "bg": "#2a1a0d",
+  "icon": "🏰",
+  "names": { "he": "הגנת המגדלים", "en": "Tower Defense", "ar": "دفاع الأبراج", "es": "Defensa de Torres", "fr": "Défense des Tours", "pt": "Defesa de Torres", "ru": "Защита башнями", "de": "Turmverteidigung" },
+  "descs": {
+    "he": "בנה ושדרג מגדלים לאורך הדרך ועצור גלים של מפלצות לפני שהן מגיעות לטירה.",
+    "en": "Build and upgrade towers along the road and stop monster waves before they reach the castle.",
+    "ar": "ابنِ الأبراج وطوّرها على طول الطريق وأوقف موجات الوحوش قبل أن تصل إلى القلعة.",
+    "es": "Construye y mejora torres junto al camino y frena las oleadas antes de que lleguen al castillo.",
+    "fr": "Construis et améliore des tours le long du chemin et stoppe les vagues avant le château.",
+    "pt": "Construa e melhore torres na estrada e pare as ondas de monstros antes do castelo.",
+    "ru": "Строй и улучшай башни у дороги и останавливай волны монстров до замка.",
+    "de": "Baue und verbessere Türme am Weg und stoppe die Monsterwellen vor der Burg."
+  }
+}

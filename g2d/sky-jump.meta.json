@@ -1,0 +1,20 @@
+{
+  "id": "sky-jump",
+  "v": 1,
+  "order": 12,
+  "type": "ARCADE",
+  "added": "2026-11-14",
+  "bg": "#4a9be8",
+  "icon": "☁️",
+  "names": { "he": "קפיצה לשמיים", "en": "Sky Jump", "ar": "القفز إلى السماء", "es": "Salto al cielo", "fr": "Saut vers le ciel", "pt": "Salto para o céu", "ru": "Прыжок в небо", "de": "Himmelssprung" },
+  "descs": {
+    "he": "קפוץ על עננים, קפיצים ותרמיל רקטה, רמוס מפלצונים ועלה הכי גבוה שאפשר.",
+    "en": "Bounce up clouds, springs and a jetpack, stomp monsters and climb as high as you can.",
+    "ar": "اقفز على السحب والنوابض وحقيبة الصاروخ، ودُس الوحوش واصعد أعلى ما يمكن.",
+    "es": "Rebota por nubes, muelles y una mochila cohete, aplasta monstruos y sube muy alto.",
+    "fr": "Rebondis sur les nuages, ressorts et jetpack, écrase les monstres et monte haut.",
+    "pt": "Quique em nuvens, molas e mochila a jato, esmague monstros e suba bem alto.",
+    "ru": "Прыгай по облакам и пружинам, лети на ранце, дави монстров и забирайся выше.",
+    "de": "Hüpf über Wolken, Federn und Raketenrucksack, mach Monster platt und steig hoch."
+  }
+}

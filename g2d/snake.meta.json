@@ -1,0 +1,20 @@
+{
+  "id": "snake",
+  "v": 1,
+  "order": 8,
+  "type": "ARCADE",
+  "added": "2026-11-14",
+  "bg": "#0f2417",
+  "icon": "🐍",
+  "names": { "he": "הנחש", "en": "Snake", "ar": "الثعبان", "es": "La Serpiente", "fr": "Le Serpent", "pt": "A Cobra", "ru": "Змейка", "de": "Die Schlange" },
+  "descs": {
+    "he": "אכול תפוחים, גדל ושרוד שלבים עם קירות שזזים. גם לשני שחקנים.",
+    "en": "Eat apples, grow longer and survive stages with moving walls. 2 players too.",
+    "ar": "كُل التفاح، اكبر، وانجُ من مراحل بجدران متحركة. وللاعبَين أيضاً.",
+    "es": "Come manzanas, crece y sobrevive etapas con paredes que se mueven. También para 2.",
+    "fr": "Mange des pommes, grandis et survis à des étapes aux murs mobiles. Aussi à 2.",
+    "pt": "Coma maçãs, cresça e sobreviva a fases com paredes que se mexem. Também para 2.",
+    "ru": "Ешь яблоки, расти и проходи этапы с движущимися стенами. Можно вдвоём.",
+    "de": "Iss Äpfel, wachse und überlebe Stufen mit beweglichen Wänden. Auch zu zweit."
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "id": "catapult",
+  "v": 1,
+  "order": 18,
+  "type": "ARCADE",
+  "added": "2026-11-14",
+  "bg": "#173a5c",
+  "icon": "🪨",
+  "names": { "he": "הקטפולטה", "en": "The Catapult", "ar": "المنجنيق", "es": "La Catapulta", "fr": "La Catapulte", "pt": "A Catapulta", "ru": "Катапульта", "de": "Das Katapult" },
+  "descs": {
+    "he": "גרור, כוון ושגר אבנים כדי להפיל מבצרים על רפשים זועפים. 20 שלבים.",
+    "en": "Pull back, aim and launch rocks to topple forts onto grumpy slimes. 20 levels.",
+    "ar": "اسحب وصوّب وأطلق الأحجار لتُسقط الحصون على هلاميات غاضبة. 20 مرحلة.",
+    "es": "Tira, apunta y lanza piedras para derribar fuertes sobre slimes gruñones. 20 niveles.",
+    "fr": "Tire, vise et lance des pierres pour renverser des forts sur des slimes grognons.",
+    "pt": "Puxe, mire e lance pedras para derrubar fortes sobre gosmas rabugentas. 20 fases.",
+    "ru": "Оттяни, прицелься и швыряй камни, обрушивая крепости на ворчливых слизней.",
+    "de": "Zieh, ziel und schleudere Steine, um Festungen auf grummelige Schleime zu stürzen."
+  }
+}

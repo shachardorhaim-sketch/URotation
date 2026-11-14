@@ -1,0 +1,20 @@
+{
+  "id": "color-connect",
+  "v": 1,
+  "order": 25,
+  "type": "PUZZLE",
+  "added": "2026-11-14",
+  "bg": "#0d1024",
+  "icon": "🔗",
+  "names": { "he": "מחברים צבעים", "en": "Color Connect", "ar": "وصّل الألوان", "es": "Une Colores", "fr": "Relie les Couleurs", "pt": "Ligue as Cores", "ru": "Соедини цвета", "de": "Farben Verbinden" },
+  "descs": {
+    "he": "חבר כל זוג נקודות באותו צבע, בלי שקווים יחצו, ומלא את כל הלוח. 50 שלבים.",
+    "en": "Join each pair of same-color dots without crossing lines and fill the board. 50 levels.",
+    "ar": "صِل كل نقطتين بنفس اللون دون تقاطع الخطوط واملأ اللوحة. 50 مرحلة.",
+    "es": "Une cada pareja de puntos del mismo color sin cruzar líneas y llena el tablero. 50 niveles.",
+    "fr": "Relie chaque paire de points de même couleur sans croiser et remplis tout. 50 niveaux.",
+    "pt": "Ligue cada par de pontos da mesma cor sem cruzar linhas e encha o tabuleiro. 50 fases.",
+    "ru": "Соедини пары точек одного цвета без пересечений и заполни всё поле. 50 уровней.",
+    "de": "Verbinde gleichfarbige Punkte ohne Kreuzungen und fülle das Feld. 50 Level."
+  }
+}

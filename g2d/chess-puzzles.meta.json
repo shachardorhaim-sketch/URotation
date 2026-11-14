@@ -1,0 +1,20 @@
+{
+  "id": "chess-puzzles",
+  "v": 1,
+  "order": 5,
+  "type": "PUZZLE",
+  "added": "2026-11-14",
+  "bg": "#14182e",
+  "icon": "♟️",
+  "names": { "he": "חידות שחמט", "en": "Chess Puzzles", "ar": "ألغاز الشطرنج", "es": "Problemas de Ajedrez", "fr": "Problèmes d'Échecs", "pt": "Problemas de Xadrez", "ru": "Шахматные задачи", "de": "Schachrätsel" },
+  "descs": {
+    "he": "מצא את המט! 60 חידות של מט במסע אחד, בשניים ובשלושה, עם כוכבים ורמזים.",
+    "en": "Find the checkmate! 60 puzzles: mate in 1, 2 and 3 moves, with stars and hints.",
+    "ar": "جد كش مات! 60 لغزاً: كش مات بنقلة ونقلتين وثلاث، مع نجوم وتلميحات.",
+    "es": "¡Encuentra el jaque mate! 60 problemas de mate en 1, 2 y 3, con estrellas y pistas.",
+    "fr": "Trouve le mat ! 60 problèmes de mat en 1, 2 et 3 coups, avec étoiles et indices.",
+    "pt": "Encontre o xeque-mate! 60 problemas de mate em 1, 2 e 3, com estrelas e dicas.",
+    "ru": "Найди мат! 60 задач: мат в 1, 2 и 3 хода, со звёздами и подсказками.",
+    "de": "Finde das Matt! 60 Rätsel: Matt in 1, 2 und 3 Zügen, mit Sternen und Tipps."
+  }
+}

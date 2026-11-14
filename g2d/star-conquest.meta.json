@@ -1,0 +1,20 @@
+{
+  "id": "star-conquest",
+  "v": 1,
+  "order": 34,
+  "type": "STRATEGY",
+  "added": "2026-11-14",
+  "bg": "#0b1030",
+  "icon": "🪐",
+  "names": { "he": "כובשי הכוכבים", "en": "Star Conquest", "ar": "غزاة الكواكب", "es": "Conquista Estelar", "fr": "Conquête Stellaire", "pt": "Conquista Estelar", "ru": "Покорители звёзд", "de": "Sternen-Eroberer" },
+  "descs": {
+    "he": "שלח חלליות מכוכב לכוכב, כבוש את הגלקסיה וגבור על אויבים עם אופי שונה ב-25 שלבים.",
+    "en": "Send fleets from planet to planet, conquer the galaxy and beat tricky foes in 25 levels.",
+    "ar": "أرسل الأساطيل من كوكب إلى كوكب واغزُ المجرة وتغلّب على أعداء ماكرين في 25 مرحلة.",
+    "es": "Envía flotas de planeta en planeta, conquista la galaxia y vence a rivales en 25 niveles.",
+    "fr": "Envoie des flottes de planète en planète, conquiers la galaxie en 25 niveaux.",
+    "pt": "Envie frotas de planeta em planeta, conquiste a galáxia e vença rivais em 25 fases.",
+    "ru": "Посылай флоты с планеты на планету и захвати галактику в 25 уровнях.",
+    "de": "Schicke Flotten von Planet zu Planet und erobere die Galaxie in 25 Leveln."
+  }
+}

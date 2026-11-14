@@ -1,0 +1,20 @@
+{
+  "id": "air-hockey",
+  "v": 1,
+  "order": 42,
+  "type": "SPORT",
+  "added": "2026-11-14",
+  "bg": "#0d1022",
+  "icon": "🏒",
+  "names": { "he": "הוקי אוויר", "en": "Air Hockey", "ar": "هوكي الهواء", "es": "Hockey de Aire", "fr": "Air Hockey", "pt": "Hóquei de Mesa", "ru": "Аэрохоккей", "de": "Airhockey" },
+  "descs": {
+    "he": "הזז את המחבט והכנס את הדיסקית לשער. מול המחשב או חבר — הראשון ל-7!",
+    "en": "Slide your mallet and smash the puck into the goal. Vs the computer or a friend — first to 7!",
+    "ar": "حرّك المضرب وأدخل القرص في المرمى. ضد الكمبيوتر أو صديق — الأول إلى 7!",
+    "es": "Mueve el mazo y mete el disco en la portería. Contra la compu o un amigo: ¡el primero a 7!",
+    "fr": "Glisse ton maillet et envoie le palet au but. Contre l'ordi ou un ami : le premier à 7 !",
+    "pt": "Mova o batedor e mande o disco para o gol. Contra o PC ou um amigo: o primeiro a 7!",
+    "ru": "Двигай биту и забивай шайбу в ворота. Против компьютера или друга — до 7 голов!",
+    "de": "Schieb den Schläger und schieß den Puck ins Tor. Gegen den PC oder Freunde — bis 7!"
+  }
+}

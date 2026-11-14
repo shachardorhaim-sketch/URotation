@@ -1,0 +1,20 @@
+{
+  "id": "pipes",
+  "v": 1,
+  "order": 23,
+  "type": "PUZZLE",
+  "added": "2026-11-14",
+  "bg": "#22603a",
+  "icon": "🚰",
+  "names": { "he": "צינורות", "en": "Pipes", "ar": "الأنابيب", "es": "Tuberías", "fr": "Tuyaux", "pt": "Canos", "ru": "Трубы", "de": "Rohre" },
+  "descs": {
+    "he": "סובב צינורות והבא מים ממגדל המים לכל הפרחים. 40 שלבים.",
+    "en": "Turn the pipes so water flows from the tower to every flower. 40 levels.",
+    "ar": "دوّر الأنابيب ليتدفق الماء من البرج إلى كل الزهور. 40 مرحلة.",
+    "es": "Gira las tuberías para que el agua llegue a todas las flores. 40 niveles.",
+    "fr": "Tourne les tuyaux pour que l'eau arrive à toutes les fleurs. 40 niveaux.",
+    "pt": "Gire os canos para a água chegar a todas as flores. 40 fases.",
+    "ru": "Поворачивай трубы, чтобы вода дошла до всех цветов. 40 уровней.",
+    "de": "Drehe die Rohre, damit das Wasser alle Blumen erreicht. 40 Level."
+  }
+}

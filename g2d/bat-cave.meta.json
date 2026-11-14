@@ -1,0 +1,20 @@
+{
+  "id": "bat-cave",
+  "v": 1,
+  "order": 10,
+  "type": "ARCADE",
+  "added": "2026-11-14",
+  "bg": "#0a0d24",
+  "icon": "🦇",
+  "names": { "he": "עטלף במערה", "en": "Bat Cave", "ar": "خفاش في الكهف", "es": "Murciélago en la cueva", "fr": "Chauve-souris des cavernes", "pt": "Morcego na Caverna", "ru": "Летучая мышь в пещере", "de": "Fledermaushöhle" },
+  "descs": {
+    "he": "עוף במערה חשוכה, שלח הד כדי לראות את הקירות ואסוף עשים זוהרים.",
+    "en": "Fly through a pitch-dark cave, send echoes to see the walls and catch glowing moths.",
+    "ar": "طِر في كهف مظلم، وأطلق الصدى لترى الجدران واجمع العث المضيء.",
+    "es": "Vuela por una cueva oscura, lanza ecos para ver las paredes y atrapa polillas.",
+    "fr": "Vole dans une grotte obscure, lance des échos pour voir les parois et attrape des papillons.",
+    "pt": "Voe por uma caverna escura, use o eco para ver as paredes e pegue mariposas.",
+    "ru": "Лети по тёмной пещере, посылай эхо, чтобы видеть стены, и лови мотыльков.",
+    "de": "Flieg durch eine dunkle Höhle, sende Echos, um die Wände zu sehen, und fang Motten."
+  }
+}

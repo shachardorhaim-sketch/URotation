@@ -1,0 +1,20 @@
+{
+  "id": "ghost-maze",
+  "v": 1,
+  "order": 15,
+  "type": "ARCADE",
+  "added": "2026-11-14",
+  "bg": "#070b1e",
+  "icon": "👻",
+  "names": { "he": "מבוך הרוחות", "en": "Ghost Maze", "ar": "متاهة الأشباح", "es": "Laberinto de fantasmas", "fr": "Labyrinthe des fantômes", "pt": "Labirinto dos Fantasmas", "ru": "Лабиринт призраков", "de": "Geisterlabyrinth" },
+  "descs": {
+    "he": "עזור לעכבר לאכול גרעינים במבוך, הבהל את הרוחות ותפוס אותן. 6 מבוכים!",
+    "en": "Help the mouse eat every seed in the maze, scare the ghosts and catch them. 6 mazes!",
+    "ar": "ساعد الفأر على أكل البذور في المتاهة، أخِف الأشباح وأمسك بها. 6 متاهات!",
+    "es": "Ayuda al ratón a comer las semillas, asusta a los fantasmas y atrápalos. ¡6 laberintos!",
+    "fr": "Aide la souris à manger les graines, effraie les fantômes et attrape-les. 6 labyrinthes !",
+    "pt": "Ajude o ratinho a comer as sementes, assuste os fantasmas e pegue-os. 6 labirintos!",
+    "ru": "Помоги мышке съесть зёрна в лабиринте, напугай призраков и поймай их. 6 лабиринтов!",
+    "de": "Hilf der Maus, alle Körner zu fressen, erschreck die Geister und fang sie. 6 Labyrinthe!"
+  }
+}
