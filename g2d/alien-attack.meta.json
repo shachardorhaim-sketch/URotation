@@ -1,0 +1,20 @@
+{
+  "id": "alien-attack",
+  "v": 1,
+  "order": 7,
+  "type": "ARCADE",
+  "added": "2026-11-14",
+  "bg": "#0b0f2a",
+  "icon": "👾",
+  "names": { "he": "חללית נגד חייזרים", "en": "Spaceship vs Aliens", "ar": "مركبة ضد الفضائيين", "es": "Nave contra alienígenas", "fr": "Vaisseau contre aliens", "pt": "Nave contra alienígenas", "ru": "Корабль против пришельцев", "de": "Raumschiff gegen Aliens" },
+  "descs": {
+    "he": "פוצץ גלים של חייזרים, התחמק מיריות וגבור על בוס ענק בכל גל חמישי.",
+    "en": "Blast alien waves, dodge their shots and beat a giant boss every 5th wave.",
+    "ar": "فجّر موجات الفضائيين وتفادَ طلقاتهم وتغلّب على زعيم عملاق كل خمس موجات.",
+    "es": "Destruye oleadas de alienígenas, esquiva sus disparos y vence a un jefe gigante.",
+    "fr": "Détruis des vagues d'aliens, esquive leurs tirs et bats un boss géant.",
+    "pt": "Destrua ondas de alienígenas, desvie dos tiros e vença um chefe gigante.",
+    "ru": "Сбивай волны пришельцев, уворачивайся от выстрелов и побеждай огромного босса.",
+    "de": "Zerstöre Alien-Wellen, weiche ihren Schüssen aus und besiege einen Riesen-Boss."
+  }
+}

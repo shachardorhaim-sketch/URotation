@@ -1,0 +1,20 @@
+{
+  "id": "wave-surfer",
+  "v": 1,
+  "order": 16,
+  "type": "ARCADE",
+  "added": "2026-11-14",
+  "bg": "#1d2b6b",
+  "icon": "🏄",
+  "names": { "he": "גולש הגלים", "en": "Wave Surfer", "ar": "راكب الأمواج", "es": "Surfista de olas", "fr": "Surfeur des vagues", "pt": "Surfista das Ondas", "ru": "Покоритель волн", "de": "Wellenreiter" },
+  "descs": {
+    "he": "גלוש על גלים, עוף מהפסגות, עשה סלטות ואסוף כוכבים ב-90 שניות.",
+    "en": "Ride the waves, fly off the crests, do flips and grab stars in 90 seconds.",
+    "ar": "اركب الأمواج، وطِر من القمم، واصنع الشقلبات واجمع النجوم في 90 ثانية.",
+    "es": "Surfea las olas, vuela desde las crestas, da volteretas y atrapa estrellas en 90 s.",
+    "fr": "Surfe les vagues, décolle des crêtes, fais des saltos et attrape des étoiles en 90 s.",
+    "pt": "Surfe nas ondas, voe das cristas, dê mortais e pegue estrelas em 90 segundos.",
+    "ru": "Скользи по волнам, взлетай с гребней, крути сальто и лови звёзды за 90 секунд.",
+    "de": "Reite die Wellen, flieg von den Kämmen, mach Saltos und sammle Sterne in 90 Sekunden."
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "id": "brick-breaker",
+  "v": 1,
+  "order": 9,
+  "type": "ARCADE",
+  "added": "2026-11-14",
+  "bg": "#141a42",
+  "icon": "🧱",
+  "names": { "he": "שובר לבנים", "en": "Brick Breaker", "ar": "كاسر الطوب", "es": "Rompeladrillos", "fr": "Casse-briques", "pt": "Quebra-tijolos", "ru": "Разбивай кирпичи", "de": "Ziegelbrecher" },
+  "descs": {
+    "he": "שבור קירות של לבנים ב-30 שלבים מעוצבים, עם כדור אש, עוד כדורים ומחבט דביק.",
+    "en": "Smash brick walls across 30 designed levels with fireballs, multi-ball and more.",
+    "ar": "حطّم جدران الطوب في 30 مرحلة مصممة مع كرة النار والكرات الإضافية.",
+    "es": "Rompe muros de ladrillos en 30 niveles con bolas de fuego, multibola y más.",
+    "fr": "Casse des murs de briques sur 30 niveaux avec boule de feu, multi-balles et plus.",
+    "pt": "Quebre muros de tijolos em 30 fases com bola de fogo, multibola e mais.",
+    "ru": "Разбивай стены из кирпичей на 30 уровнях с огненным мячом и мультимячом.",
+    "de": "Zerschlage Ziegelwände in 30 Levels mit Feuerball, Multiball und mehr."
+  }
+}

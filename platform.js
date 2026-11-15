@@ -65,6 +65,33 @@ function mountIframe(url, minH) {
   };
 }
 
+// משחק 2D מהתיקייה g2d: המנוע המשותף (g2d/kit.js) והמשחק עצמו נטענים רק כשפותחים אותו.
+const g2dScripts = {};
+function g2dScript(src) {
+  if (!g2dScripts[src]) g2dScripts[src] = new Promise((ok, fail) => {
+    const s = document.createElement('script');
+    s.src = src;
+    s.onload = ok;
+    s.onerror = () => { delete g2dScripts[src]; fail(new Error(src)); };
+    document.head.appendChild(s);
+  });
+  return g2dScripts[src];
+}
+function mountG2D(c) {
+  return function (host) {
+    let cleanup = null, dead = false;
+    const wait = document.createElement('div');
+    wait.style.cssText = 'color:#9fb3c8;font-size:34px;font-weight:800';
+    wait.textContent = '…';
+    host.appendChild(wait);
+    g2dScript('g2d/kit.js?v=' + window.G2D_KIT_V)
+      .then(() => g2dScript('g2d/' + c.id + '.js?v=' + c.v))
+      .then(() => { if (dead) return; wait.remove(); cleanup = GK.mount(c.id, host); })
+      .catch(() => { if (!dead) wait.textContent = '⚠'; });
+    return function () { dead = true; if (cleanup) cleanup(); };
+  };
+}
+
 // ---------- קטלוג המשחקים בפלטפורמה ----------
 // mount — איך המשחק נטען במסך המשחק של האתר. משחק שחי בכתובת אחרת: mount:mountIframe('https://...').
 // type — סוג המשחק שכתוב על הכרטיס: ARCADE, CASUAL, PUZZLE, STRATEGY, SPORT, SURVIVAL, FUNNY, SIMULATION.
@@ -84,6 +111,12 @@ const GAMES = [
   { id:'tetris', title:'Tetris', desc:'טטריס — סובב, הפל ונקה שורות!', imgFile:'tetris-logo.png', icon:'🟪', type:'PUZZLE', added:'2026-07-18', bg:'linear-gradient(135deg,#2a1b4b,#0d1b2a)', mount:mountTetris },
   { id:'pong', dim:'3d', plainBg:true, title:'פינג פונג', desc:'מול המחשב, מול חבר על אותו מחשב, או אונליין עם קוד חדר.', imgFile:'pong-logo.jpg', icon:'🏓', type:'SPORT', added:'2026-08-29', bg:'#00000f', mount:mountIframe('https://shachardorhaim-sketch.github.io/ping-pong-3d/?v=3') },
 ];
+// משחקי ה-2D של g2d. הרשימה נבנית מ-g2d/catalog.js, והשם והתיאור שלהם ב-8 השפות באים איתם (names, descs).
+(window.G2D_CATALOG || []).forEach(c => GAMES.push({
+  id:c.id, title:c.names.he, desc:c.descs.he, names:c.names, descs:c.descs,
+  imgFile:'g2d/' + c.id + '.webp?v=' + c.v, imgFill:true, icon:c.icon, type:c.type, added:c.added, bg:c.bg,
+  mount:mountG2D(c),
+}));
 
 const grid = document.getElementById('grid');
 GAMES.forEach(g => {
@@ -98,7 +131,7 @@ GAMES.forEach(g => {
   const src = g.imgFile || '';
   const thumbContent = src
     ? (g.imgFill || g.plainBg ? '' : '<div class="gthumb-bd" style="background-image:url(' + src + ')"></div>') +
-      '<img class="gimg' + (g.imgFill ? ' fill' : '') + '" src="' + src + '" alt="">'
+      '<img class="gimg' + (g.imgFill ? ' fill' : '') + '" src="' + src + '" alt="" loading="lazy">'
     : '<span class="gicon">'+g.icon+'</span>';
   card.innerHTML =
     '<div class="gthumb" style="background:'+g.bg+'">'+thumbContent+'<span class="gbadge"></span></div>' +
@@ -268,8 +301,8 @@ GAMES.forEach(g => {
       const gid = card.dataset.gid; if(!gid) return;
       const g = GAMES.find(x=>x.id===gid); if(!g) return;
       const h=card.querySelector('h3'), p=card.querySelector('.gbody p'), pl=card.querySelector('.gplay'), bd=card.querySelector('.gbadge');
-      if(h) h.textContent = GTITLE[gid] ? t(GTITLE[gid]) : g.title;
-      if(p) p.textContent = GDESC[gid] ? t(GDESC[gid]) : g.desc;
+      if(h) h.textContent = g.names ? (g.names[curLang] || g.names.he) : GTITLE[gid] ? t(GTITLE[gid]) : g.title;
+      if(p) p.textContent = g.descs ? (g.descs[curLang] || g.descs.he) : GDESC[gid] ? t(GDESC[gid]) : g.desc;
       if(pl) pl.textContent = g.soon ? t('soon') : t('play');
       if(bd) bd.textContent = badgeText(g);
     });

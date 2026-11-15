@@ -1,0 +1,20 @@
+{
+  "id": "cow-cannon",
+  "v": 1,
+  "order": 45,
+  "type": "FUNNY",
+  "added": "2026-11-14",
+  "bg": "#1f4f7a",
+  "icon": "🐄",
+  "names": { "he": "תותח הפרות", "en": "Cow Cannon", "ar": "مدفع البقر", "es": "El Cañón de Vacas", "fr": "Le Canon à Vaches", "pt": "Canhão de Vacas", "ru": "Коровья пушка", "de": "Kuhkanone" },
+  "descs": {
+    "he": "שגר פרה עם קסדה מתותח, קפוץ על חציר, קנה שדרוגים והגע עד הירח!",
+    "en": "Fire a helmeted cow from a cannon, bounce on hay, buy upgrades and reach the moon!",
+    "ar": "أطلق بقرة بخوذة من مدفع، اقفز على القش، اشترِ ترقيات وصِل إلى القمر!",
+    "es": "Dispara una vaca con casco, rebota en el heno, compra mejoras y llega a la luna.",
+    "fr": "Tire une vache casquée au canon, rebondis sur le foin et vise la lune !",
+    "pt": "Dispare uma vaca de capacete, quique no feno, compre melhorias e chegue à lua!",
+    "ru": "Стреляй коровой в шлеме из пушки, прыгай по сену, улучшай и лети к Луне!",
+    "de": "Schieß eine Kuh mit Helm aus der Kanone, hüpf auf Heu und flieg bis zum Mond!"
+  }
+}

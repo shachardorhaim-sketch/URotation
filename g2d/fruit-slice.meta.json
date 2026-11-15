@@ -1,0 +1,20 @@
+{
+  "id": "fruit-slice",
+  "v": 1,
+  "order": 11,
+  "type": "ARCADE",
+  "added": "2026-11-14",
+  "bg": "#6b4220",
+  "icon": "🍉",
+  "names": { "he": "חותכים פירות", "en": "Fruit Slice", "ar": "تقطيع الفواكه", "es": "Corta frutas", "fr": "Tranche-fruits", "pt": "Corta frutas", "ru": "Режем фрукты", "de": "Obst schneiden" },
+  "descs": {
+    "he": "החלק כדי לחתוך פירות באוויר, עשה קומבו ואל תיגע בפצצות. קלאסי או מרוץ.",
+    "en": "Swipe to slice flying fruit, chain combos and avoid the bombs. Classic or rush.",
+    "ar": "اسحب لتقطيع الفواكه الطائرة، اصنع كومبو وتجنّب القنابل.",
+    "es": "Desliza para cortar fruta en el aire, haz combos y evita las bombas.",
+    "fr": "Glisse pour trancher les fruits en vol, enchaîne les combos, évite les bombes.",
+    "pt": "Deslize para cortar frutas no ar, faça combos e fuja das bombas.",
+    "ru": "Режь летящие фрукты взмахом, делай комбо и не трогай бомбы.",
+    "de": "Wische, um fliegendes Obst zu schneiden, mach Combos und meide Bomben."
+  }
+}

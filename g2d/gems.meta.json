@@ -1,0 +1,20 @@
+{
+  "id": "gems",
+  "v": 1,
+  "order": 27,
+  "type": "PUZZLE",
+  "added": "2026-11-14",
+  "bg": "#1d0f3d",
+  "icon": "💎",
+  "names": { "he": "יהלומים", "en": "Gems", "ar": "الجواهر", "es": "Gemas", "fr": "Gemmes", "pt": "Joias", "ru": "Самоцветы", "de": "Edelsteine" },
+  "descs": {
+    "he": "סדר שלושה יהלומים בשורה, צור פצצות ומפוצצים ועבור 30 שלבים עם 3 כוכבים.",
+    "en": "Line up three gems, make bombs and blasters, and beat 30 levels with 3 stars.",
+    "ar": "صفّ ثلاث جواهر، اصنع قنابل ومفجّرات، واجتز 30 مرحلة بثلاث نجوم.",
+    "es": "Alinea tres gemas, crea bombas y rayos y supera 30 niveles con 3 estrellas.",
+    "fr": "Aligne trois gemmes, crée bombes et rayons et réussis 30 niveaux à 3 étoiles.",
+    "pt": "Alinhe três joias, crie bombas e raios e vença 30 fases com 3 estrelas.",
+    "ru": "Собирай три камня в ряд, создавай бомбы и лучи, пройди 30 уровней на 3 звезды.",
+    "de": "Bringe drei Steine in eine Reihe, baue Bomben und Strahlen, meistere 30 Level."
+  }
+}

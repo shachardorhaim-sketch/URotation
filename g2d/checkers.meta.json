@@ -1,0 +1,20 @@
+{
+  "id": "checkers",
+  "v": 1,
+  "order": 37,
+  "type": "STRATEGY",
+  "added": "2026-11-14",
+  "bg": "#10241b",
+  "icon": "🔴",
+  "names": { "he": "דמקה", "en": "Checkers", "ar": "الداما", "es": "Damas", "fr": "Dames", "pt": "Damas", "ru": "Шашки", "de": "Dame" },
+  "descs": {
+    "he": "דמקה קלאסית: אכילה חובה, קפיצות ברצף ומלכים. נגד המחשב ב-3 רמות או מול חבר.",
+    "en": "Classic checkers: forced captures, multi-jumps and kings. Vs the computer or a friend.",
+    "ar": "داما كلاسيكية: أكل إجباري وقفزات متتالية وملوك. ضد الكمبيوتر أو ضد صديق.",
+    "es": "Damas clásicas: captura obligatoria, saltos múltiples y damas. Contra la PC o un amigo.",
+    "fr": "Dames classiques : prise obligatoire, rafles et dames. Contre l'ordinateur ou un ami.",
+    "pt": "Damas clássicas: captura obrigatória, saltos múltiplos e damas. Contra o PC ou um amigo.",
+    "ru": "Классические шашки: бить обязательно, серии прыжков и дамки. С компьютером или другом.",
+    "de": "Klassisches Dame: Schlagzwang, Mehrfachsprünge und Damen. Gegen den PC oder zu zweit."
+  }
+}

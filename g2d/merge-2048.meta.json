@@ -1,0 +1,20 @@
+{
+  "id": "merge-2048",
+  "v": 1,
+  "order": 19,
+  "type": "PUZZLE",
+  "added": "2026-11-14",
+  "bg": "#1b1236",
+  "icon": "🔢",
+  "names": { "he": "2048", "en": "2048", "ar": "2048", "es": "2048", "fr": "2048", "pt": "2048", "ru": "2048", "de": "2048" },
+  "descs": {
+    "he": "החלק אריחים, אחד מספרים זהים והגע ל-2048. לוחות 4×4 עד 6×6, עם ביטול מהלך.",
+    "en": "Slide tiles, merge equal numbers and reach 2048. Boards from 4×4 to 6×6, with undo.",
+    "ar": "حرّك المربعات وادمج الأرقام المتساوية حتى 2048. لوحات من 4×4 إلى 6×6 مع تراجع.",
+    "es": "Desliza fichas, une números iguales y llega a 2048. Tableros de 4×4 a 6×6, con deshacer.",
+    "fr": "Fais glisser les tuiles, fusionne les nombres égaux et atteins 2048. De 4×4 à 6×6.",
+    "pt": "Deslize peças, junte números iguais e chegue a 2048. Tabuleiros de 4×4 a 6×6, com desfazer.",
+    "ru": "Сдвигай плитки, соединяй одинаковые числа и дойди до 2048. Поля от 4×4 до 6×6.",
+    "de": "Schiebe Steine, verbinde gleiche Zahlen und erreiche 2048. Felder von 4×4 bis 6×6."
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "id": "head-soccer",
+  "v": 1,
+  "order": 41,
+  "type": "SPORT",
+  "added": "2026-11-14",
+  "bg": "#14304f",
+  "icon": "⚽",
+  "names": { "he": "כדורגל ראשים", "en": "Big Head Soccer", "ar": "كرة الرؤوس", "es": "Fútbol Cabezón", "fr": "Foot Grosses Têtes", "pt": "Futebol Cabeção", "ru": "Футбол головами", "de": "Großkopf-Fußball" },
+  "descs": {
+    "he": "קפוץ, נגח ובעט בעיטות אש מול המחשב או מול חבר. משחק של 90 שניות!",
+    "en": "Jump, head and fire power shots against the computer or a friend. 90-second matches!",
+    "ar": "اقفز واضرب برأسك وأطلق ركلات نارية ضد الكمبيوتر أو صديق. مباريات 90 ثانية!",
+    "es": "Salta, cabecea y lanza tiros de fuego contra la computadora o un amigo. ¡Partidos de 90 s!",
+    "fr": "Saute, fais des têtes et des frappes de feu contre l'ordi ou un ami. Matchs de 90 s !",
+    "pt": "Pule, cabeceie e dê chutes de fogo contra o computador ou um amigo. Jogos de 90 s!",
+    "ru": "Прыгай, бей головой и огненными ударами против компьютера или друга. Матчи по 90 с!",
+    "de": "Spring, köpfe und schieß Feuerschüsse gegen den Computer oder Freunde. 90-Sekunden-Spiele!"
+  }
+}
