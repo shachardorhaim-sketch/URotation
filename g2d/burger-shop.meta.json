@@ -1,0 +1,20 @@
+{
+  "id": "burger-shop",
+  "v": 1,
+  "order": 50,
+  "type": "SIMULATION",
+  "added": "2026-11-14",
+  "bg": "#3a1f14",
+  "icon": "🍔",
+  "names": { "he": "מסעדת ההמבורגרים", "en": "Burger Shop", "ar": "مطعم البرغر", "es": "La Hamburguesería", "fr": "Le Burger Shop", "pt": "A Hamburgueria", "ru": "Бургерная", "de": "Der Burgerladen" },
+  "descs": {
+    "he": "בנה המבורגרים לפי ההזמנה, צלה קציצות בדיוק בזמן והגש לפני שהלקוחות מתעצבנים.",
+    "en": "Stack burgers to order, grill patties just right and serve before customers lose patience.",
+    "ar": "اصنع البرغر حسب الطلب، واشوِ اللحم في الوقت المناسب، وقدّمه قبل أن ينفد صبر الزبائن.",
+    "es": "Arma hamburguesas al gusto, asa la carne a punto y sirve antes de que se impacienten.",
+    "fr": "Monte des burgers sur commande, grille les steaks pile à temps et sers avant l’impatience.",
+    "pt": "Monte hambúrgueres do pedido, grelhe a carne no ponto e sirva antes da impaciência.",
+    "ru": "Собирай бургеры по заказу, жарь котлеты вовремя и подавай, пока клиенты ждут.",
+    "de": "Bau Burger nach Bestellung, grill Pattys auf den Punkt und serviere, bevor Gäste ungeduldig werden."
+  }
+}

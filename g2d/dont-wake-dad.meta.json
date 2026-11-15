@@ -1,0 +1,20 @@
+{
+  "id": "dont-wake-dad",
+  "v": 1,
+  "order": 46,
+  "type": "FUNNY",
+  "added": "2026-11-14",
+  "bg": "#141a33",
+  "icon": "😴",
+  "names": { "he": "אל תעירו את אבא", "en": "Don't Wake Dad", "ar": "لا توقظوا أبي", "es": "No despiertes a papá", "fr": "Ne réveille pas papa", "pt": "Não acorde o papai", "ru": "Не разбуди папу", "de": "Weck Papa nicht auf" },
+  "descs": {
+    "he": "התגנב בבית החשוך לצנצנת העוגיות וחזור למיטה — בלי להעיר את אבא!",
+    "en": "Sneak through the dark house to the cookie jar and back to bed. Don't wake Dad!",
+    "ar": "تسلّل في البيت المظلم إلى برطمان الكعك وعد إلى السرير. لا توقظ أبي!",
+    "es": "Cruza la casa a oscuras hasta el tarro de galletas y vuelve a la cama. ¡Sin despertar a papá!",
+    "fr": "Faufile-toi dans la maison jusqu’aux cookies et retourne au lit sans réveiller papa !",
+    "pt": "Atravesse a casa escura até o pote de biscoitos e volte para a cama sem acordar o papai!",
+    "ru": "Прокрадись по тёмному дому к печенью и обратно в кровать. Не разбуди папу!",
+    "de": "Schleich durchs dunkle Haus zur Keksdose und zurück ins Bett. Weck Papa nicht auf!"
+  }
+}

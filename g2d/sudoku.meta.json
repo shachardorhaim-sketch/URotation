@@ -1,0 +1,20 @@
+{
+  "id": "sudoku",
+  "v": 1,
+  "order": 21,
+  "type": "PUZZLE",
+  "added": "2026-11-14",
+  "bg": "#0f1e3a",
+  "icon": "🧩",
+  "names": { "he": "סודוקו", "en": "Sudoku", "ar": "سودوكو", "es": "Sudoku", "fr": "Sudoku", "pt": "Sudoku", "ru": "Судоку", "de": "Sudoku" },
+  "descs": {
+    "he": "מלא את הלוח ב-1 עד 9 בלי לחזור על מספר. שלוש רמות, הערות, רמזים ושיא זמן.",
+    "en": "Fill the grid with 1 to 9 without repeats. Three levels, notes, hints and best times.",
+    "ar": "املأ اللوحة بالأرقام من 1 إلى 9 بلا تكرار. ثلاثة مستويات وملاحظات وتلميحات.",
+    "es": "Llena la cuadrícula del 1 al 9 sin repetir. Tres niveles, notas, pistas y récords.",
+    "fr": "Remplis la grille de 1 à 9 sans répétition. Trois niveaux, notes, indices et records.",
+    "pt": "Preencha a grade de 1 a 9 sem repetir. Três níveis, notas, dicas e recordes de tempo.",
+    "ru": "Заполни поле цифрами 1–9 без повторов. Три уровня, заметки, подсказки и рекорды.",
+    "de": "Fülle das Gitter mit 1 bis 9 ohne Wiederholung. Drei Stufen, Notizen, Tipps, Rekorde."
+  }
+}

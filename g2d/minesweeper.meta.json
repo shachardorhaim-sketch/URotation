@@ -1,0 +1,20 @@
+{
+  "id": "minesweeper",
+  "v": 1,
+  "order": 22,
+  "type": "PUZZLE",
+  "added": "2026-11-14",
+  "bg": "#16301d",
+  "icon": "💣",
+  "names": { "he": "שדה מוקשים", "en": "Minesweeper", "ar": "كاسحة الألغام", "es": "Buscaminas", "fr": "Démineur", "pt": "Campo Minado", "ru": "Сапёр", "de": "Minensucher" },
+  "descs": {
+    "he": "חשוף את השדה בלי לעלות על מוקש. שלושה גדלים, ואפשר לפתור כל לוח בלי לנחש.",
+    "en": "Clear the field without hitting a mine. Three sizes, and every board is solvable by logic.",
+    "ar": "اكشف الحقل دون أن تلمس لغماً. ثلاثة أحجام، وكل لوحة تُحل بالمنطق.",
+    "es": "Despeja el campo sin pisar una mina. Tres tamaños y cada tablero se resuelve con lógica.",
+    "fr": "Déblaie le champ sans toucher de mine. Trois tailles, chaque grille se résout par logique.",
+    "pt": "Limpe o campo sem pisar numa mina. Três tamanhos, e todo tabuleiro se resolve com lógica.",
+    "ru": "Открой поле и не наступи на мину. Три размера, каждое поле решается логикой.",
+    "de": "Räume das Feld, ohne eine Mine zu treffen. Drei Größen, jedes Feld ist logisch lösbar."
+  }
+}

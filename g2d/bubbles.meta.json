@@ -1,0 +1,20 @@
+{
+  "id": "bubbles",
+  "v": 1,
+  "order": 28,
+  "type": "PUZZLE",
+  "added": "2026-11-14",
+  "bg": "#0e2a4a",
+  "icon": "🫧",
+  "names": { "he": "בועות", "en": "Bubbles", "ar": "الفقاعات", "es": "Burbujas", "fr": "Bulles", "pt": "Bolhas", "ru": "Пузыри", "de": "Blasen" },
+  "descs": {
+    "he": "כוון, ירה ופוצץ 3 בועות מאותו צבע לפני שהתקרה יורדת. 25 שלבים ומצב אינסופי.",
+    "en": "Aim, shoot and pop 3 bubbles of a colour before the ceiling drops. 25 levels + endless.",
+    "ar": "صوّب وأطلق وفجّر 3 فقاعات من لون واحد قبل أن ينزل السقف. 25 مرحلة ووضع بلا نهاية.",
+    "es": "Apunta, dispara y explota 3 burbujas iguales antes de que baje el techo. 25 niveles.",
+    "fr": "Vise, tire et éclate 3 bulles de même couleur avant que le plafond descende. 25 niveaux.",
+    "pt": "Mire, atire e estoure 3 bolhas da mesma cor antes que o teto desça. 25 fases e infinito.",
+    "ru": "Целься, стреляй и лопай 3 пузыря одного цвета, пока не опустился потолок. 25 уровней.",
+    "de": "Ziele, schieße und lass 3 gleiche Blasen platzen, bevor die Decke sinkt. 25 Level."
+  }
+}

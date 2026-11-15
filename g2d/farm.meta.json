@@ -1,0 +1,20 @@
+{
+  "id": "farm",
+  "v": 1,
+  "order": 49,
+  "type": "SIMULATION",
+  "added": "2026-11-14",
+  "bg": "#3d2a17",
+  "icon": "🌾",
+  "names": { "he": "החווה", "en": "The Farm", "ar": "المزرعة", "es": "La Granja", "fr": "La Ferme", "pt": "A Fazenda", "ru": "Ферма", "de": "Der Bauernhof" },
+  "descs": {
+    "he": "שתול, השקה וקצור, גדל תרנגולות ופרות, מלא הזמנות ובנה חווה גדולה.",
+    "en": "Plant, water and harvest, raise chickens and cows, fill orders and grow a big farm.",
+    "ar": "ازرع واسقِ واحصد، وربِّ الدجاج والأبقار، ولبِّ الطلبات وكبّر مزرعتك.",
+    "es": "Planta, riega y cosecha, cría gallinas y vacas, completa pedidos y agranda tu granja.",
+    "fr": "Plante, arrose et récolte, élève poules et vaches, livre des commandes et agrandis ta ferme.",
+    "pt": "Plante, regue e colha, crie galinhas e vacas, complete pedidos e aumente a fazenda.",
+    "ru": "Сажай, поливай и собирай урожай, разводи кур и коров, выполняй заказы и расширяй ферму.",
+    "de": "Pflanze, gieße und ernte, halte Hühner und Kühe, erfülle Aufträge und vergrößere deinen Hof."
+  }
+}

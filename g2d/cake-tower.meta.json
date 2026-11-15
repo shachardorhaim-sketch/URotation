@@ -1,0 +1,20 @@
+{
+  "id": "cake-tower",
+  "v": 1,
+  "order": 47,
+  "type": "CASUAL",
+  "added": "2026-11-14",
+  "bg": "#2a1b2e",
+  "icon": "🎂",
+  "names": { "he": "מגדל העוגה", "en": "Cake Tower", "ar": "برج الكعكة", "es": "Torre de Pastel", "fr": "Tour de Gâteau", "pt": "Torre de Bolo", "ru": "Башня из торта", "de": "Tortenturm" },
+  "descs": {
+    "he": "הפל שכבות עוגה ובנה מגדל עד השמיים. נחיתה מושלמת מגדילה את השכבה!",
+    "en": "Drop cake layers and stack a tower to the sky. Perfect drops grow the layer!",
+    "ar": "أسقط طبقات الكعك وابنِ برجاً حتى السماء. الإسقاط المثالي يكبّر الطبقة!",
+    "es": "Suelta capas de pastel y apila una torre hasta el cielo. ¡Lo perfecto la agranda!",
+    "fr": "Lâche des étages de gâteau jusqu’au ciel. Un lâcher parfait agrandit l’étage !",
+    "pt": "Solte camadas de bolo e empilhe uma torre até o céu. Queda perfeita aumenta!",
+    "ru": "Роняй коржи и строй торт до неба. Идеальное попадание увеличивает корж!",
+    "de": "Lass Tortenschichten fallen und staple bis zum Himmel. Perfekt macht sie breiter!"
+  }
+}

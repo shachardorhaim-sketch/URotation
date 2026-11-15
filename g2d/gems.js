@@ -592,6 +592,7 @@
     for (let k = S.dying.length - 1; k >= 0; k--) { const d = S.dying[k]; if (++d.t > 14 + d.d) S.dying.splice(k, 1); }
     for (let k = S.fx.length - 1; k >= 0; k--) if (++S.fx[k].t > 26) S.fx.splice(k, 1);
     const still = settle(S);
+    if (S.pausedEnd) { S.pausedEnd = false; if (S.phase === 'done') S.endT = Math.min(S.endT, 10); if (S.phase === 'lost') S.endT = Math.min(S.endT, 20); }   // אחרי השהיה: עוד חצי שנייה
     switch (S.phase) {
       case 'intro': if (--S.timer <= 0) S.phase = 'idle'; break;
       case 'idle':
@@ -839,6 +840,7 @@
     },
 
     idle(g) { if (g.s) g.s.t++; },
+    onPause(g) { if (g.s) g.s.pausedEnd = true; },
 
     // בוט לבדיקות: מהלך חמדן דרך אותה פעולת החלפה של השחקן
     bot(g) {

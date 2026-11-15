@@ -1,0 +1,20 @@
+{
+  "id": "four-in-row",
+  "v": 1,
+  "order": 38,
+  "type": "STRATEGY",
+  "added": "2026-11-14",
+  "bg": "#1b1452",
+  "icon": "🔴",
+  "names": { "he": "ארבע בשורה", "en": "Four in a Row", "ar": "أربعة في صف", "es": "Cuatro en Raya", "fr": "Quatre en ligne", "pt": "Quatro em Linha", "ru": "Четыре в ряд", "de": "Vier in einer Reihe" },
+  "descs": {
+    "he": "הפל דיסקיות וחבר 4 בשורה לפני היריב — נגד המחשב בשלוש רמות או מול חבר.",
+    "en": "Drop discs and line up four before your rival. Beat the computer or a friend!",
+    "ar": "أسقط الأقراص واصنع أربعة في صف قبل خصمك. العب ضد الكمبيوتر أو صديق!",
+    "es": "Suelta fichas y alinea cuatro antes que tu rival. ¡Contra la computadora o un amigo!",
+    "fr": "Lâche des jetons et aligne-en quatre avant ton rival. Contre l'ordi ou un ami !",
+    "pt": "Solte peças e alinhe quatro antes do rival. Contra o computador ou um amigo!",
+    "ru": "Бросай фишки и собери четыре в ряд раньше соперника. Против компьютера или друга!",
+    "de": "Lass Steine fallen und bilde zuerst eine Viererreihe. Gegen den Computer oder Freunde!"
+  }
+}

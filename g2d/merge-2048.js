@@ -490,7 +490,7 @@
       if (d) queueMove(g, d);
     },
 
-    onPause(g) { if (g.s) g.s.wasPaused = true; },
+    onPause(g) { if (g.s) { g.s.wasPaused = true; if (g.s.stuck) g.s.stuckT = Math.min(g.s.stuckT, 50); } },   // אחרי השהיה: המסך 'אין מהלכים' נשאר עוד רגע
 
     onPointer(g, type, p) {
       const S = g.s, L = S.L;
