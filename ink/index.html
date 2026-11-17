@@ -2747,7 +2747,7 @@ const SYMBOLS = [
   [T('עברית ופיסוק'), '₪ ״ ׳ ־ « » „ “ ” … • · — – § © ® ™ € $ £'],
   [T('סימנים'), '✓ ✔ ✗ ✘ ★ ☆ ♥ ☐ ☑ ○ ● □ ■ △ ▲ ◇ ◆ ♪ ☺'],
 ];
-const EMOJI = '😀 😃 😄 😁 😆 😅 😂 🤣 😊 😇 🙂 😉 😍 🥰 😘 😋 😜 🤪 😎 🤩 🥳 😏 😴 🤔 🤨 😐 🙄 😬 😮 😱 😭 😢 😡 🤯 🥺 😳 🤗 🤫 🤭 👍 👎 👌 ✌️ 🤞 👏 🙌 🙏 💪 👀 👋 ❤️ 🧡 💛 💚 💙 💜 🖤 💔 ✨ ⭐ 🌟 🔥 💯 ✅ ❌ ⚠️ ❓ ❗ 💡 📌 📎 📚 📖 ✏️ 📝 🎓 🏫 🧮 📐 📏 🔬 🌍 🌈 ☀️ 🌙 ⚡ ❄️ 🌸 🌳 🐶 🐱 🦁 🐉 🦄 🍕 🍔 🍦 🍫 ⚽ 🏀 🎮 🎧 🎬 🎨 🎵 🎉 🎁 🏆 🚀 ✈️ 🏠 ⏰ 📅';
+const EMOJI = '😀 😃 😄 😁 😆 😅 😂 🤣 😊 😇 🙂 😉 😍 🥰 😘 😋 😜 🤪 😎 🤩 🥳 😏 😴 🤔 🤨 😐 🙄 😬 😮 😱 😭 😢 😡 🤯 🥺 😳 🤗 🤫 🤭 👍 👎 👌 ✌️ 🤞 👏 🙌 🙏 💪 👀 👋 ❤️ 🧡 💛 💚 💙 💜 🖤 💔 ✨ ⭐ 🌟 🔥 💯 ✅ ❌ ⚠️ ❓ ❗ 💡 📌 📎 📚 📖 ✏️ 🧽 📝 🎓 🏫 🧮 📐 📏 🔬 🌍 🌈 ☀️ 🌙 ⚡ ❄️ 🌸 🌳 🐶 🐱 🦁 🐉 🦄 🍕 🍔 🍦 🍫 ⚽ 🏀 🎮 🎧 🎬 🎨 🎵 🎉 🎁 🏆 🚀 ✈️ 🏠 ⏰ 📅';
 const symGrid = chars => h('div', { class: 'sym-grid' }, chars.split(' ').filter(Boolean).map(ch => h('button', { class: 'sym', title: ch, 'aria-label': ch, onclick: () => insertText(ch) }, ch)));
 function openSymbols(anchor) { openPop(anchor, h('div', {}, SYMBOLS.map(([t, s], i) => [h('div', { class: i ? 'pop-sec' : 'pop-t', text: t }), symGrid(s)]))); }
 function openEmoji(anchor) { openPop(anchor, h('div', {}, h('div', { class: 'pop-t', text: T('אימוג׳י') }), symGrid(EMOJI))); }
