@@ -2406,14 +2406,31 @@ async function copyText(t) {
    text formatting
    ========================================================= */
 function setFont(name) { restoreSel(); document.execCommand('styleWithCSS', false, true); document.execCommand('fontName', false, name); afterChange(); }
+/* a size chosen with nothing selected is for the letters typed next, as in Word: it waits at the caret (PEND) and the
+   first letter typed right there takes it (onPendInput). It used to put an invisible character into the text to hold
+   the size, and that character stayed behind: a Backspace or Delete went on it and seemed to do nothing */
+let PEND = null;   // { pt, node, off }
+function pendHere() { const s = getSelection(); return !!PEND && s.rangeCount > 0 && s.isCollapsed && s.anchorNode === PEND.node && s.anchorOffset === PEND.off; }
+function onPendInput(e) {
+  if (!PEND) return;
+  const here = pendHere();
+  if (!here) PEND = null;
+  if (!here || e.defaultPrevented || e.isComposing || e.inputType !== 'insertText' || !e.data) return;
+  e.preventDefault();
+  const r = curRange(), span = h('span', { style: { fontSize: PEND.pt + 'pt' } }, e.data);
+  PEND = null;
+  r.insertNode(span);
+  const nr = document.createRange(); nr.setStart(span.firstChild, span.firstChild.length); nr.collapse(true); setRange(nr);
+  afterChange();
+}
 function setFontSize(pt) {
   restoreSel();
   const r = curRange(); if (!r) return;
   if (r.collapsed) {
-    const span = h('span', { style: { fontSize: pt + 'pt' } }, '\u200B');
-    r.insertNode(span);
-    const nr = document.createRange(); nr.setStart(span.firstChild, 1); nr.collapse(true); setRange(nr);
-    afterChange(); return;
+    setRange(r);
+    PEND = { pt, node: r.startContainer, off: r.startOffset };
+    sizeSel.value = String(pt);
+    return;
   }
   const sel = getSelOffsets();
   document.execCommand('styleWithCSS', false, false);
@@ -3484,6 +3501,22 @@ async function emptyTrash() {
   for (const d of list) await deleteForever(d.id, true);
   toast(T('הסל רוקן'), { icon: 'delete_sweep' });
 }
+/* the zero-width characters an older version left to hold a font size (setFontSize), and the empty spans that held
+   them: each one ate a Backspace or a Delete. They go when a document opens. A line left with nothing keeps a <br> */
+function dropZwsp() {
+  const hit = [], w = document.createTreeWalker(ed, NodeFilter.SHOW_TEXT);
+  for (let t; (t = w.nextNode());) if (t.data.includes(ZWSP)) hit.push(t);
+  for (const t of hit) {
+    t.data = t.data.split(ZWSP).join('');
+    if (t.data) continue;
+    let el = t.parentElement;
+    t.remove();
+    while (el && el !== ed && INLINE.has(el.tagName) && !el.firstChild) { const up = el.parentElement; el.remove(); el = up; }
+    const blk = el && el !== ed ? el.closest(LEAF_SEL) : null;
+    if (blk && ed.contains(blk) && !blk.textContent && !blk.querySelector('br,img,hr,table,input')) blk.append(document.createElement('br'));
+  }
+  return hit.length;
+}
 function cleanHTML() {
   const c = ed.cloneNode(true);
   c.querySelectorAll('.sel').forEach(x => x.classList.remove('sel'));
@@ -3515,7 +3548,8 @@ function loadIntoEditor({ id, meta, html, isSample }) {
   $('#docTitle').placeholder = S.cur.meta.auto || untitled(meta);
   updateDocTitle();
   applyPage();
-  const healed = fixRtlBlocks();   // lines saved running the wrong way (see fixRtlBlocks)
+  PEND = null;
+  const healed = dropZwsp() + fixRtlBlocks();   // invisible characters and lines saved running the wrong way
   resetHistory();
   if (S.panel === 'link') renderLinkWait();   // each document can have its own listening chat
   if (deck) deckLoad(html);
@@ -15837,7 +15871,7 @@ function updateUI() {
   if (el) {
     const cs = getComputedStyle(el);
     if (document.activeElement !== fontSel) { const f = firstFamily(cs.fontFamily); fontSel.value = FONT_NAMES.has(f) ? f : pageOf().font; }
-    if (document.activeElement !== sizeSel) sizeSel.value = String(nearest(SIZES, pxToPt(parseFloat(cs.fontSize))));
+    if (document.activeElement !== sizeSel) sizeSel.value = String(pendHere() ? PEND.pt : nearest(SIZES, pxToPt(parseFloat(cs.fontSize))));
   }
   const blk = closestInEd('h1,h2,h3,blockquote,pre');
   const tag = blk ? blk.tagName.toLowerCase() : 'p';
@@ -15961,8 +15995,49 @@ function onLineInput(e) {
     : t === 'deleteContentBackward' || t === 'deleteContentForward' ? eraseFromLine(t === 'deleteContentBackward') : false;
   if (done) { e.preventDefault(); afterChange(); }
 }
+/* Backspace at the very start of a list item takes its bullet (or number, or box) away first, as in Word and Google Docs,
+   and leaves its words as a line of their own; a sub-item moves one step out. The browser did nothing at the top of a
+   document, and elsewhere joined the item to the line above */
+function liStartBack() {
+  const s = getSelection();
+  if (!s.rangeCount || !s.isCollapsed) return false;
+  const li = closestInEd('li');
+  if (!li) return false;
+  const r = document.createRange(); r.setStart(li, 0); r.setEnd(s.anchorNode, s.anchorOffset);
+  return !r.toString().split(ZWSP).join('') && !r.cloneContents().querySelector('img,br');
+}
+/* the item steps out of its list and the caret stays at the start of its words. The browser's outdent rebuilt the
+   line and left the caret at the end of the line above, so a top-level item is taken out here: the items before it
+   stay a list, it becomes a line, and the items after it make a list of their own that goes on counting. A sub-item
+   moves one step out with the browser's outdent */
+function listOut() {
+  const li = closestInEd('li'), list = li.parentElement;
+  if (list.parentElement.closest('li') && ed.contains(list.parentElement.closest('li'))) { exec('outdent'); return; }
+  const items = [...list.children], i = items.indexOf(li), rest = items.slice(i + 1);
+  const p = document.createElement('p');
+  for (const a of ['dir']) if (li.getAttribute(a)) p.setAttribute(a, li.getAttribute(a));
+  if (li.style.textAlign) p.style.textAlign = li.style.textAlign;
+  const subs = [];
+  for (const n of [...li.childNodes]) { if (n.nodeType === 1 && /^(UL|OL)$/.test(n.tagName)) subs.push(n); else p.append(n); }
+  if (!p.firstChild || (!p.textContent && !p.querySelector('img,br'))) p.append(document.createElement('br'));
+  let tail = null;
+  if (rest.length) {
+    tail = list.cloneNode(false);
+    if (list.tagName === 'OL') tail.setAttribute('start', String((+list.getAttribute('start') || 1) + i));
+    for (const x of rest) tail.append(x);
+  }
+  list.after(p, ...subs, ...(tail ? [tail] : []));
+  li.remove();
+  if (!list.children.length) list.remove();
+  const w = document.createTreeWalker(p, NodeFilter.SHOW_TEXT), t = w.nextNode();
+  const r = document.createRange();
+  if (t) r.setStart(t, 0); else r.setStart(p, 0);
+  r.collapse(true); setRange(r);
+  afterChange();
+}
 function onEditorKey(e) {
   keyAt = performance.now();   // typing: the ribbon catches up in the pause after it (scheduleUI)
+  if (e.key === 'Backspace' && !e.shiftKey && !e.ctrlKey && !e.metaKey && !e.altKey && liStartBack()) { e.preventDefault(); listOut(); return; }
   if (e.key === 'Tab') {
     e.preventDefault();
     const cell = closestInEd('td,th');
@@ -16034,7 +16109,7 @@ function onPaste(e) {
   const html = dt.getData('text/html');
   if (html) {
     e.preventDefault();
-    const clean = sanitize(html.replace(/^[\s\S]*<!--StartFragment-->|<!--EndFragment-->[\s\S]*$/g, ''), true);
+    const clean = sanitize(html.replace(/^[\s\S]*<!--StartFragment-->|<!--EndFragment-->[\s\S]*$/g, ''), true).split(ZWSP).join('');   // nothing invisible comes in with a paste
     if (clean.trim()) insertHTML(clean); else insertText(dt.getData('text/plain'));
     return;
   }
@@ -16125,6 +16200,7 @@ function wire() {
   ed.addEventListener('input', e => { if (!e.isComposing) ensureBlocks(); if (e.inputType === 'insertParagraph') fixNewLi(); if (selectedImg && !ed.contains(selectedImg)) deselectImg(); onEdited(); });
   ed.addEventListener('beforeinput', e => { if (e.inputType === 'historyUndo') { e.preventDefault(); undo(); } else if (e.inputType === 'historyRedo') { e.preventDefault(); redo(); } });
   ed.addEventListener('beforeinput', docLease);   // in a shared room: a paragraph someone is typing in waits for them
+  ed.addEventListener('beforeinput', onPendInput);   // a font size chosen with nothing selected goes on the next letter
   ed.addEventListener('beforeinput', onLineInput);   // after docLease, which may have held the typing back
   document.fonts.addEventListener('loadingdone', tuneFills);   // a line measured before its font came is measured again
   ed.addEventListener('keydown', onEditorKey);
