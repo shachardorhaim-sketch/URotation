@@ -2305,7 +2305,7 @@ function redo() {
 function exec(cmd, val) { restoreSel(); document.execCommand(cmd, false, val == null ? null : val); afterChange(); }
 function insertHTML(html) { restoreSel(); document.execCommand('insertHTML', false, html); afterChange(); }
 function insertText(t) { restoreSel(); document.execCommand('insertText', false, t); afterChange(); }
-function afterChange() { ensureBlocks(); onEdited(); }
+function afterChange() { ensureBlocks(); fixRtlBlocks(); onEdited(); }
 const INLINE = new Set(['SPAN', 'B', 'STRONG', 'I', 'EM', 'U', 'S', 'STRIKE', 'SUB', 'SUP', 'A', 'FONT', 'MARK', 'BR', 'IMG', 'CODE', 'SMALL', 'DEL', 'INS']);
 function ensureBlocks() {
   if (!ed.firstChild) { ed.innerHTML = '<p><br></p>'; if (document.activeElement === ed) caretIn(ed.firstChild); return; }
@@ -2530,6 +2530,32 @@ function toggleDir() {
     if (/^(left|right)$/.test(b.style.textAlign)) b.style.textAlign = '';
   }
   afterChange();
+}
+/* a Hebrew (or Arabic) paragraph turned to run left to right, then put back on the right with "align right", looks
+   like any Hebrew line, but the browser then puts the caret at one end of it and the letters at the other: a click
+   at the end of the line types at its start, and a click at its start types at its end. Nobody means that, so such
+   a paragraph runs right to left again, where it stays on the right by itself. This runs after every command, so
+   "align right" on such a paragraph mends it, and when a document opens, so the ones saved this way heal.
+   A line with no letters yet (empty, or only numbers) is mended when the page around it runs right to left */
+function fixRtlBlocks() {
+  const wrongWay = b => {
+    const m = /\p{L}/u.exec(b.textContent);
+    return m ? /[\p{Script=Hebrew}\p{Script=Arabic}\p{Script=Syriac}\p{Script=Thaana}\p{Script=Nko}]/u.test(m[0]) : getComputedStyle(b.parentElement).direction === 'rtl';
+  };
+  const rtlIn = (el, parent) => { if (getComputedStyle(parent).direction === 'rtl') el.removeAttribute('dir'); else el.setAttribute('dir', 'rtl'); };
+  let n = 0;
+  for (const b of ed.querySelectorAll('[dir="ltr"]')) {
+    if (!b.matches(LEAF_SEL) || b.style.textAlign !== 'right' || !wrongWay(b)) continue;
+    b.style.textAlign = '';
+    if (!b.getAttribute('style')) b.removeAttribute('style');
+    if (b.tagName === 'LI') {   // a list item says it itself, and the list follows once none of its items runs left to right
+      b.setAttribute('dir', 'rtl');
+      const list = b.parentElement;
+      if (list.getAttribute('dir') === 'ltr' && ![...list.children].some(li => li.getAttribute('dir') === 'ltr')) rtlIn(list, list.parentElement);
+    } else rtlIn(b, b.parentElement);
+    n++;
+  }
+  return n;
 }
 function setLineHeight(v) { restoreSel(); for (const b of selectedBlocks()) b.style.lineHeight = v; afterChange(); }
 function fixNewLi() {
@@ -3488,7 +3514,9 @@ function loadIntoEditor({ id, meta, html, isSample }) {
   $('#docTitle').value = S.cur.meta.title || '';
   $('#docTitle').placeholder = S.cur.meta.auto || untitled(meta);
   updateDocTitle();
-  applyPage(); resetHistory();
+  applyPage();
+  const healed = fixRtlBlocks();   // lines saved running the wrong way (see fixRtlBlocks)
+  resetHistory();
   if (S.panel === 'link') renderLinkWait();   // each document can have its own listening chat
   if (deck) deckLoad(html);
   else if (pdfa) pdfaLoad(html);
@@ -3500,6 +3528,7 @@ function loadIntoEditor({ id, meta, html, isSample }) {
   fontSel.value = pg.font; sizeSel.value = String(pg.fontSize); lhSel.value = String(pg.lh);
   desk.scrollTop = 0;
   setSave(isSample ? 'sample' : 'saved');
+  if (healed && !isSample) markDirty();   // and saved mended
   loadLink(isSample ? null : id);
   if (S.panel === 'outline') renderOutline();
   if (S.panel === 'versions') renderVersions();
