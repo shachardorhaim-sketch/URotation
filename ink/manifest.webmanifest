@@ -24,6 +24,11 @@
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx"],
         "text/csv": [".csv"]
       }
+    },
+    {
+      "action": "./",
+      "accept": { "application/x-floating-ink": [".fink"] },
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
     }
   ],
   "icons": [

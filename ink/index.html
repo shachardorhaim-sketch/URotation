@@ -1096,6 +1096,7 @@ body.aud{margin:0;height:100vh;background:#000;display:grid;place-items:center;o
       <div class="grp"><div class="gb">
         <button class="rb big" data-cmd="openPdf" title="פותחים דף עבודה או כל קובץ PDF, וכותבים עליו או מוציאים ממנו את הטקסט"><span class="ms">picture_as_pdf</span>פתיחת PDF</button>
         <button class="rb big" data-cmd="importFile"><span class="ms">upload_file</span>ייבוא קובץ</button>
+        <button class="rb big" data-cmd="saveFink" title="שומר קובץ של Floating Ink עם הכל בדיוק כמו כאן. פותחים אותו שוב דרך ייבוא קובץ או בלחיצה כפולה עליו"><span class="ms">ink_pen</span>שמירה כ-Floating Ink</button>
         <button class="rb big doc-only" data-cmd="exportAs" data-arg="docx"><span class="ms">description</span>שמירה כ-Word</button>
         <button class="rb big deck-only" data-cmd="exportAs" data-arg="pptx"><span class="ms">slideshow</span>שמירה כפאוורפוינט</button>
         <button class="rb big deck-only" data-cmd="deckPng" title="שקופית אחת או כולן, כתמונות PNG"><span class="ms">image</span>שמירה כתמונות</button>
@@ -1825,7 +1826,7 @@ body.aud{margin:0;height:100vh;background:#000;display:grid;place-items:center;o
 <input type="file" id="fileImage" accept="image/*" hidden>
 <input type="file" id="fileVideo" accept="video/*,.mp4,.m4v,.mov,.webm" hidden>
 <input type="file" id="fileAudio" accept="audio/*,.mp3,.m4a,.wav,.ogg,.aac,.flac,.weba" hidden>
-<input type="file" id="fileImport" accept=".docx,.txt,.md,.markdown,.html,.htm,.pdf,.pptx,.ppsx,.potx,.pptm,.ppt,.xlsx,.xlsm,.xls,.csv,.tsv" hidden>
+<input type="file" id="fileImport" accept=".fink,.docx,.txt,.md,.markdown,.html,.htm,.pdf,.pptx,.ppsx,.potx,.pptm,.ppt,.xlsx,.xlsm,.xls,.csv,.tsv" hidden>
 <input type="file" id="filePdf" accept=".pdf,application/pdf" hidden>
 <input type="file" id="fileBackup" accept=".json,application/json" hidden>
 <style id="pageRule"></style>
@@ -4204,8 +4205,8 @@ async function exportAs(kind) {
   await offerFile(`${name}.${kind}`, data);
 }
 function openExportMenu(anchor) {
-  const items = [['docx', 'description', 'Word', '.docx'], ['pdf', 'picture_as_pdf', 'PDF', '.pdf'], ['html', 'code', T('דף אינטרנט'), '.html'], ['txt', 'notes', T('טקסט פשוט'), '.txt'], ['md', 'tag', 'Markdown', '.md']];
-  openPop(anchor, h('div', { class: 'menu' }, h('div', { class: 'pop-t', text: T('שמירת עותק כקובץ') }), items.map(([k, ic, l, ext]) => h('button', { class: 'mi', onclick: () => { closePopover(); exportAs(k); } }, icon(ic), l, h('small', { text: ext })))));
+  const items = [['fink', 'ink_pen', 'Floating Ink', '.fink'], ['docx', 'description', 'Word', '.docx'], ['pdf', 'picture_as_pdf', 'PDF', '.pdf'], ['html', 'code', T('דף אינטרנט'), '.html'], ['txt', 'notes', T('טקסט פשוט'), '.txt'], ['md', 'tag', 'Markdown', '.md']];
+  openPop(anchor, h('div', { class: 'menu' }, h('div', { class: 'pop-t', text: T('שמירת עותק כקובץ') }), items.map(([k, ic, l, ext]) => h('button', { class: 'mi', onclick: () => { closePopover(); if (k === 'fink') saveAsFink(); else exportAs(k); } }, icon(ic), l, h('small', { text: ext })))));
 }
 /* --- Word (.docx) --- */
 const BLOCK_TAGS = new Set(['P', 'DIV', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'BLOCKQUOTE', 'PRE', 'UL', 'OL', 'LI', 'TABLE', 'HR', 'FIGURE', 'SECTION', 'ARTICLE', 'TR', 'TD', 'TH', 'THEAD', 'TBODY']);
@@ -4532,6 +4533,7 @@ async function fileToHtml(f, ext) {
 async function importFile(f) {
   if (!S.store) return;
   const ext = (f.name.split('.').pop() || '').toLowerCase();
+  if (ext === 'fink') { try { await openFink(f, null); } catch (e) { console.error(e); toast(T('לא הצלחתי לקרוא את הקובץ'), { ms: 6000 }); } return; }
   if (ext === 'pdf') { await openPdfImport(f); return; }
   if (PPTX_RE.test(f.name) || ext === 'ppt') { await openPptxImport(f); return; }
   if (/^(xlsx|xlsm|xls|csv|tsv)$/.test(ext)) { await openSheetImport(f); return; }
@@ -4635,6 +4637,11 @@ async function openLaunched(files) {
   for (const hd of files) await openFromDisk(hd);
 }
 async function openFromDisk(hd) {
+  if (/\.fink$/i.test(hd.name)) {
+    try { await openFink(await hd.getFile(), hd); }
+    catch (e) { console.error(e); toast(T(`לא הצלחתי לפתוח את "{0}"`, hd.name), { ms: 7000 }); }
+    return;
+  }
   if (PPTX_RE.test(hd.name)) {
     try { await openPptxFromDisk(hd); }
     catch (e) { console.error(e); toast(T(`לא הצלחתי לפתוח את "{0}"`, hd.name), { ms: 7000 }); }
@@ -4687,6 +4694,75 @@ async function openFromDisk(hd) {
   } catch (e) {
     console.error(e);
     toast(e && e.message === 'lib' ? T('לא הצלחתי לטעון את הכלי שקורא קבצי Word. כדאי לבדוק את החיבור לאינטרנט.') : T(`לא הצלחתי לפתוח את "{0}"`, hd.name), { ms: 7000 });
+  } finally { busy.remove(); }
+}
+/* --- a Floating Ink file (.fink): the document as the app itself keeps it, whatever its kind (pages, slides and their
+   videos, cells, layers, comic pages), so opening it brings back exactly what was saved. Inside it is a backup of this
+   one document, so the backup's reading and restoring open it --- */
+async function buildFink() {
+  if (deckOpen()) exitEdit();
+  if (pdfaOpen()) paCommitEdit();
+  await flushSave();
+  const c = S.cur, meta = { ...(allDocs().find(d => d.id === c.id) || c.meta), id: c.id };
+  const json = JSON.stringify({ app: 'floating-ink', v: 1, file: 'fink', at: new Date().toISOString(), docs: [{ meta, html: curBody() }] });
+  return new Blob([await withMedia(json)], { type: 'application/x-floating-ink' });
+}
+/* "Save as Floating Ink". Where the page may pick the file itself (Chrome and Edge on a computer) the document stays
+   tied to it, and Ctrl+S saves into it again, as in Word. Elsewhere the file downloads */
+async function saveAsFink() {
+  if (!S.cur) return;
+  const name = safeName(displayTitle(S.cur.meta)) + '.fink';
+  let hd = null;
+  if (typeof window.showSaveFilePicker === 'function' && !S.inClaude && !S.caps.downloads) {
+    try { hd = await window.showSaveFilePicker({ suggestedName: name, types: [{ description: T('קובץ Floating Ink'), accept: { 'application/x-floating-ink': ['.fink'] } }] }); }
+    catch (e) { if (e && e.name === 'AbortError') return; hd = null; }
+  }
+  const c = S.cur, busy = toast(T('שומר לקובץ…'), { icon: 'save', ms: 120000 });
+  try {
+    const data = await buildFink();
+    if (!hd) { busy.remove(); await offerFile(name, data); return; }
+    const w = await hd.createWritable();
+    try { await w.write(data); await w.close(); } catch (e) { try { await w.abort(); } catch {} throw e; }
+    const f = await hd.getFile();
+    if (S.cur === c && !c.isSample) {
+      await fileLinks.put({ docId: c.id, handle: hd, name: f.name, kind: 'fink', mod: f.lastModified, synced: c.meta.updatedAt || Date.now(), warned: true });
+      await loadLink(c.id);
+    }
+    toast(T(`נשמר לתוך {0}`, f.name), { icon: 'check' });
+  } catch (e) {
+    console.error(e);
+    toast(T('השמירה לא הצליחה'), { ms: 6000 });
+  } finally { busy.remove(); }
+}
+/* opening one brings it back as a new document here. Opened from the computer (File Explorer's "Open with", or a
+   file the app may keep) it stays tied to the file and Ctrl+S saves back into it, and opened again unchanged it goes
+   back to the same document. A file holding many documents is a backup: it opens the restore window */
+async function openFink(f, hd) {
+  let j = null;
+  try { j = parseBackup(await f.text()); } catch {}
+  if (j && j.docs.length > 1) { await restorePreview(j); return; }
+  const d = j && j.docs[0];
+  if (!d || !d.html) { toast(T(`הקובץ "{0}" לא נראה כמו קובץ של Floating Ink`, f.name), { ms: 7000 }); return; }
+  if (hd) {
+    for (const r of await fileLinks.all()) {
+      const m = findMeta(r.docId);
+      if (!m || m.trashed || r.kind !== 'fink' || !r.handle) continue;
+      let same = false;
+      try { same = await r.handle.isSameEntry(hd); } catch {}
+      if (same && r.mod === f.lastModified) { r.handle = hd; await fileLinks.put(r); await openDoc(r.docId); await loadLink(r.docId); return; }
+    }
+  }
+  const id = uid(), meta = { ...d.meta, id, title: f.name.replace(/\.fink$/i, ''), updatedAt: Date.now() };
+  const busy = toast(T('פותח את הקובץ…'), { icon: 'description', ms: 120000 });
+  try {
+    if (!(await restoreDocs([{ d: { meta, html: d.html }, m: meta, deck: isDeck(meta) }], j))) return;
+    for (let i = 0; !findMeta(id) && i < 100; i++) await sleep(50);   // the list hears of the new document a moment later
+    await openDoc(id);
+    if (hd && S.cur && S.cur.id === id) {
+      await fileLinks.put({ docId: id, handle: hd, name: f.name, kind: 'fink', mod: f.lastModified, synced: S.cur.meta.updatedAt || Date.now(), warned: true });
+      await loadLink(id);
+    }
+    toast(T('הקובץ נפתח'), { icon: 'description' });
   } finally { busy.remove(); }
 }
 /* plain text, one line per paragraph. (innerText leaves a blank line after every paragraph,
@@ -4761,8 +4837,8 @@ async function saveToFile() {
       if (!(await confirmBox(T('לשמור לתוך הקובץ?'), T(`הגיליון הפתוח יישמר לתוך "{0}" במחשב כמו ש-CSV שומר: רק מה שכתוב בתאים, בלי עיצוב. הנוסחאות נשארות כאן באפליקציה. השאלה הזאת לא תופיע שוב לקובץ הזה.`, L.name), T('לשמור')))) return;
       L.warned = true;
     }
-    if (L.kind === 'pdf') paCommitEdit();
-    if (L.kind === 'pptx') exitEdit();
+    if (L.kind === 'pdf' || (L.kind === 'fink' && pdfaOpen())) paCommitEdit();
+    if (L.kind === 'pptx' || (L.kind === 'fink' && deckOpen())) exitEdit();
     if ((L.kind === 'xlsx' || L.kind === 'csv') && SK) SK.commit();
     // asking needs the key press or click that started this, so it comes before anything slow
     let p = await L.handle.queryPermission({ mode: 'readwrite' });
@@ -4770,7 +4846,7 @@ async function saveToFile() {
     if (p !== 'granted') { toast(T('בלי אישור לשנות את הקובץ אי אפשר לשמור לתוכו. השינויים שמורים כאן באפליקציה.'), { ms: 7000 }); return; }
     await flushSave();
     busy = toast(T('שומר לקובץ…'), { icon: 'save', ms: 120000 });
-    const data = L.kind === 'docx' ? await buildDocx() : L.kind === 'pdf' ? await buildPdfaPdf() : L.kind === 'pptx' ? await buildPptx()
+    const data = L.kind === 'fink' ? await buildFink() : L.kind === 'docx' ? await buildDocx() : L.kind === 'pdf' ? await buildPdfaPdf() : L.kind === 'pptx' ? await buildPptx()
       : L.kind === 'xlsx' ? await (await loadSheetKit()).xlsx() : L.kind === 'csv' ? (await loadSheetKit()).csv() : diskText(L);
     if (S.cur !== c) return;
     const w = await L.handle.createWritable();
@@ -15785,7 +15861,7 @@ const CMD = {
   zoomIn: () => setZoom(PREFS.zoom + 10), zoomOut: () => setZoom(PREFS.zoom - 10), zoomReset: () => setZoom(100),
   newDoc: () => openNewDialog(), duplicate: () => { if (S.cur && !S.cur.isSample) return duplicateDoc(S.cur.id); },
   openDrawer: () => setDrawer(true), closeDrawer: () => setDrawer(false),
-  importFile: () => $('#fileImport').click(), exportAs: a => exportAs(a), exportMenu: (a, b) => openExportMenu(b), print: () => doPrint(),
+  importFile: () => $('#fileImport').click(), saveFink: () => saveAsFink(), exportAs: a => exportAs(a), exportMenu: (a, b) => openExportMenu(b), print: () => doPrint(),
   versions: () => openPanel('versions'), saveVersion: () => manualVersion(), backup: () => openBackup(), restoreBackup: () => $('#fileBackup').click(),
   trash: () => { setDrawer(true); setFilter('trash'); },
   ai: a => runAI(a), aiPanel: () => openPanel('ai'), closePanel: () => closePanel(),
@@ -16219,7 +16295,7 @@ function wire() {
     if (e.defaultPrevented || !e.dataTransfer || !e.dataTransfer.files.length) return;
     e.preventDefault();
     const f = e.dataTransfer.files[0];
-    if (/\.(docx|txt|md|markdown|html?|pdf|pptx|ppsx|potx|pptm|ppt|xlsx|xlsm|xls|csv|tsv)$/i.test(f.name)) importFile(f);
+    if (/\.(fink|docx|txt|md|markdown|html?|pdf|pptx|ppsx|potx|pptm|ppt|xlsx|xlsm|xls|csv|tsv)$/i.test(f.name)) importFile(f);
     else if (/^image\//.test(f.type) && S.cur && !pdfaOpen() && !sheetOpen()) { if (drawOpen()) { if (DRAWK) DRAWK.image(f); } else if (comicOpen()) { if (CMK) CMK.image(f); } else if (deckOpen()) deckImageFile(f); else insertImageFile(f); }
     else if (/^video\//.test(f.type) && deckOpen()) deckVideoFile(f);
   });
