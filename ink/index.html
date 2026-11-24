@@ -1858,6 +1858,9 @@ const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+/* text that changes as you type (the status bar, the save note) is written only when it really changed: the same
+   text written again still makes the browser lay that part out again, once for every letter */
+function setText(el, v) { if (el.textContent !== v) el.textContent = v; }
 function lsGet(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch { return d; } }
 function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch { return false; } }
 function lsDel(k) { try { localStorage.removeItem(k); } catch {} }
@@ -2889,7 +2892,7 @@ function updatePageStat() {
     const top = (rect.top - sheet.getBoundingClientRect().top) / (S.zoom || 1);
     cur = clamp(Math.floor((top - S.mt) / S.per) + 1, 1, S.pages);
   }
-  $('#stPage').textContent = T(`עמוד {0} מתוך {1}`, fmt(cur), fmt(S.pages));
+  setText($('#stPage'), T(`עמוד {0} מתוך {1}`, fmt(cur), fmt(S.pages)));
 }
 function setZoom(pct) {
   PREFS.zoom = clamp(Math.round(pct / 10) * 10, 50, 200); savePrefs();
@@ -2920,8 +2923,8 @@ function updateStats() {
   if (comicOpen()) { $('#stGoal').hidden = true; if (CMK) CMK.stat(); else $('#stWords').textContent = ''; return; }   // and comic.js the page and the words said
   const t = ed.innerText;
   S.words = countWords(t);
-  $('#stWords').textContent = wordsLabel(S.words);
-  $('#stChars').textContent = TN('{n} תווים', t.replace(/\n/g, '').length);
+  setText($('#stWords'), wordsLabel(S.words));
+  setText($('#stChars'), TN('{n} תווים', t.replace(/\n/g, '').length));
   ed.classList.toggle('empty', !t.trim() && !ed.querySelector('img,table,hr,ul,ol') && ed.children.length <= 1);
   updateGoal();
 }
@@ -3302,27 +3305,44 @@ function renderDocs() {
   if (S.filter === 'star') docs = docs.filter(d => d.starred);
   if (q) docs = docs.filter(d => (displayTitle(d) + ' ' + (d.snippet || '')).toLowerCase().includes(q));
   docs.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+  // every save comes back here, and usually only the open document's row changed (its time, words, first line).
+  // When the list holds the same documents in the same order, only rows that changed are drawn again: drawing all
+  // of them after each save held up the typing on a long list
+  const rows = [...list.children];
+  if (docs.length && rows.length === docs.length && rows.every((r, i) => r.dataset.id === docs[i].id)) {
+    docs.forEach((d, i) => { if (rows[i].dataset.sig !== docSig(d)) rows[i].replaceWith(docRow(d)); });
+    if (kept) focusDocRow(LIST_FOCUS || kept.id, kept.i);
+    return;
+  }
   list.textContent = '';
   if (S.filter === 'trash' && docs.length) list.append(h('div', { class: 'trash-bar' }, h('span', { class: 'muted grow', text: T('מסמכים בסל אפשר לשחזר או למחוק לתמיד.') }), h('button', { class: 'btn small danger', onclick: emptyTrash }, T('ריקון הסל'))));
   if (!docs.length) {
     list.append(h('div', { class: 'dr-empty', text: q ? T('לא נמצאו מסמכים מתאימים') : S.filter === 'star' ? T('אין עדיין מועדפים. לוחצים על הכוכב ליד מסמך.') : S.filter === 'trash' ? T('הסל ריק') : S.docsReady ? T('אין עדיין מסמכים') : T('טוען…') }));
     return;
   }
-  for (const d of docs) {
-    const cur = S.cur && !S.cur.isSample && d.id === S.cur.id;
-    const more = h('button', { class: 'icon-btn', title: T('פעולות'), 'aria-label': T('פעולות על המסמך'), onclick: e => { e.stopPropagation(); openDocMenu(more, d); } }, icon('more_horiz'));
-    const star = d.trashed ? null : h('button', { class: 'icon-btn star' + (d.starred ? ' on' : ''), title: d.starred ? T('הסרה מהמועדפים') : T('הוספה למועדפים'), 'aria-label': T('מועדף'), 'aria-pressed': String(!!d.starred), onclick: e => { e.stopPropagation(); toggleStar(d.id); } }, icon('star', d.starred ? 'fill' : ''));
-    const deck = isDeck(d), pdfa = isPdfa(d), sht = isSheet(d), drw = isDraw(d), cmc = isComic(d);
-    list.append(h('div', {
-      class: 'di' + (cur ? ' cur' : '') + (d.trashed ? ' trashed' : '') + (deck ? ' deck' : '') + (pdfa ? ' pdfa' : '') + (sht ? ' sheet' : '') + (drw ? ' draw' : '') + (cmc ? ' comic' : ''), role: 'listitem', tabindex: d.trashed ? null : 0, 'data-id': d.id,
-      onclick: () => { if (!d.trashed) openDoc(d.id).then(focusOpenDoc); },
-      onkeydown: e => { if (e.key === 'Enter' && !d.trashed && e.target === e.currentTarget) openDoc(d.id).then(focusOpenDoc); },
-    },
-    icon(deck ? 'slideshow' : pdfa ? 'picture_as_pdf' : sht ? 'table_view' : drw ? 'palette' : cmc ? 'auto_stories' : 'description', 'di-ic'),
-    h('div', { class: 'di-main' }, h('div', { class: 'di-t', text: displayTitle(d) }), h('div', { class: 'di-m', text: `${relTime(d.updatedAt || Date.now())} · ${deck ? TN('{n} שקופיות', d.slides || 1) : pdfa ? TN('{n} עמודים', d.pages || 1) : sht ? TN('{n} גיליונות', d.sheets || 1) : drw ? (d.frames > 1 ? TN('{n} פריימים', d.frames) : TN('{n} שכבות', d.layers || 1)) : cmc ? TN('{n} דפים', d.pages || 1) : wordsLabel(d.words || 0)}` }), d.snippet ? h('div', { class: 'di-s', text: d.snippet }) : null),
-    star, more));
-  }
+  for (const d of docs) list.append(docRow(d));
   if (kept) focusDocRow(LIST_FOCUS || kept.id, kept.i);
+}
+/* a row of the list, and a short code of everything it shows: the row is drawn again only when the code changes */
+const docCur = d => !!S.cur && !S.cur.isSample && d.id === S.cur.id;
+function docLine(d) {
+  const deck = isDeck(d), pdfa = isPdfa(d), sht = isSheet(d), drw = isDraw(d), cmc = isComic(d);
+  return `${relTime(d.updatedAt || Date.now())} · ${deck ? TN('{n} שקופיות', d.slides || 1) : pdfa ? TN('{n} עמודים', d.pages || 1) : sht ? TN('{n} גיליונות', d.sheets || 1) : drw ? (d.frames > 1 ? TN('{n} פריימים', d.frames) : TN('{n} שכבות', d.layers || 1)) : cmc ? TN('{n} דפים', d.pages || 1) : wordsLabel(d.words || 0)}`;
+}
+const docSig = d => [docCur(d), !!d.trashed, !!d.starred, d.kind || '', displayTitle(d), docLine(d), d.snippet || ''].join('\u0001');
+function docRow(d) {
+  const cur = docCur(d);
+  const more = h('button', { class: 'icon-btn', title: T('פעולות'), 'aria-label': T('פעולות על המסמך'), onclick: e => { e.stopPropagation(); openDocMenu(more, d); } }, icon('more_horiz'));
+  const star = d.trashed ? null : h('button', { class: 'icon-btn star' + (d.starred ? ' on' : ''), title: d.starred ? T('הסרה מהמועדפים') : T('הוספה למועדפים'), 'aria-label': T('מועדף'), 'aria-pressed': String(!!d.starred), onclick: e => { e.stopPropagation(); toggleStar(d.id); } }, icon('star', d.starred ? 'fill' : ''));
+  const deck = isDeck(d), pdfa = isPdfa(d), sht = isSheet(d), drw = isDraw(d), cmc = isComic(d);
+  return h('div', {
+    class: 'di' + (cur ? ' cur' : '') + (d.trashed ? ' trashed' : '') + (deck ? ' deck' : '') + (pdfa ? ' pdfa' : '') + (sht ? ' sheet' : '') + (drw ? ' draw' : '') + (cmc ? ' comic' : ''), role: 'listitem', tabindex: d.trashed ? null : 0, 'data-id': d.id, 'data-sig': docSig(d),
+    onclick: () => { if (!d.trashed) openDoc(d.id).then(focusOpenDoc); },
+    onkeydown: e => { if (e.key === 'Enter' && !d.trashed && e.target === e.currentTarget) openDoc(d.id).then(focusOpenDoc); },
+  },
+  icon(deck ? 'slideshow' : pdfa ? 'picture_as_pdf' : sht ? 'table_view' : drw ? 'palette' : cmc ? 'auto_stories' : 'description', 'di-ic'),
+  h('div', { class: 'di-main' }, h('div', { class: 'di-t', text: displayTitle(d) }), h('div', { class: 'di-m', text: docLine(d) }), d.snippet ? h('div', { class: 'di-s', text: d.snippet }) : null),
+  star, more);
 }
 /* the list keeps the keyboard: on a document by its id, or on the one now at place i. A document not in the list yet
    (one just brought back from the bin) takes it when the list shows it */
@@ -3612,10 +3632,11 @@ function setSave(state, msg) {
   S.saveState = state;
   const b = $('#saveState'), local = S.mode !== 'db';
   const [ic, tx] = ({ saved: [local ? 'computer' : 'cloud_done', local ? T('נשמר במכשיר') : T('נשמר')], dirty: ['sync', T('שומר…')], saving: ['sync', T('שומר…')], error: ['cloud_off', T('לא נשמר')], sample: ['visibility', T('מסמך לדוגמה')] })[state];
-  b.querySelector('.ms').textContent = ic;
-  b.querySelector('.txt').textContent = tx;
+  setText(b.querySelector('.ms'), ic);   // every letter typed says "dirty" again: only a real change touches the page
+  setText(b.querySelector('.txt'), tx);
   b.classList.toggle('error', state === 'error');
-  b.title = state === 'error' ? T(`{0} לחיצה תנסה לשמור שוב.`, (msg || '')) : state === 'sample' ? T('כשמתחילים לערוך, הדוגמה נשמרת כמסמך רגיל.') : '';
+  const ti = state === 'error' ? T(`{0} לחיצה תנסה לשמור שוב.`, (msg || '')) : state === 'sample' ? T('כשמתחילים לערוך, הדוגמה נשמרת כמסמך רגיל.') : '';
+  if (b.title !== ti) b.title = ti;
   renderFileChip();
 }
 function markDirty() {
@@ -4523,14 +4544,15 @@ async function loadLink(id) {
   if (rec && S.cur && S.cur.id === id) { S.link = rec; renderFileChip(); }
 }
 function renderFileChip() {
-  const b = $('#fileChip'), L = S.link, c = S.cur;
-  b.hidden = !linkedHere();
-  if (b.hidden) return;
+  const b = $('#fileChip'), L = S.link, c = S.cur, hide = !linkedHere();
+  if (b.hidden !== hide) b.hidden = hide;
+  if (hide) return;
   const dirty = S.editVer !== S.savedVer || (c.meta.updatedAt || 0) > (L.synced || 0);
   b.classList.toggle('dirty', dirty);
-  b.querySelector('.ms').textContent = dirty ? 'save' : 'description';
-  b.querySelector('.txt').textContent = L.name;
-  b.title = dirty ? T(`יש שינויים שעוד לא נשמרו לתוך "{0}" במחשב. לחיצה או Ctrl+S שומרים אותם.`, L.name) : T(`המסמך פתוח מהקובץ "{0}" במחשב, והכל שמור בו.`, L.name);
+  setText(b.querySelector('.ms'), dirty ? 'save' : 'description');
+  setText(b.querySelector('.txt'), L.name);
+  const ti = dirty ? T(`יש שינויים שעוד לא נשמרו לתוך "{0}" במחשב. לחיצה או Ctrl+S שומרים אותם.`, L.name) : T(`המסמך פתוח מהקובץ "{0}" במחשב, והכל שמור בו.`, L.name);
+  if (b.title !== ti) b.title = ti;
 }
 /* the browser hands over the files the app was opened with. They wait until the documents list is
    ready and whatever opened at start has finished opening */
@@ -15770,7 +15792,15 @@ function fitDeckRibbon() {
     }
   }
 }
-const scheduleUI = rafOnce(updateUI);
+/* the ribbon follows the caret: bold on or off, the font, the size, the page. Asking the browser for all that costs
+   a few milliseconds each time, many more on a busy computer, and done before every paint it held up each letter being
+   typed. So while keys are pressed in the page it waits for a short pause; a click or a button still shows at once */
+const uiNow = rafOnce(updateUI), uiAfterKeys = debounce(updateUI, 180);
+let keyAt = -1e9;
+function scheduleUI() {
+  if (performance.now() - keyAt < 600) { uiAfterKeys(); return; }
+  uiAfterKeys.cancel(); uiNow();
+}
 function updateUI() {
   if (!S.cur || !curRange()) return;
   for (const b of $$('[data-state]')) { let on = false; try { on = document.queryCommandState(b.dataset.state); } catch {} b.classList.toggle('on', !!on); }
@@ -15903,6 +15933,7 @@ function onLineInput(e) {
   if (done) { e.preventDefault(); afterChange(); }
 }
 function onEditorKey(e) {
+  keyAt = performance.now();   // typing: the ribbon catches up in the pause after it (scheduleUI)
   if (e.key === 'Tab') {
     e.preventDefault();
     const cell = closestInEd('td,th');
@@ -16075,6 +16106,7 @@ function wire() {
   ed.addEventListener('mouseup', () => { if (painter) setTimeout(applyPainter, 0); });
   sheet.addEventListener('mousedown', e => { if (S.cur && (e.target === sheet || e.target.id === 'guides')) { e.preventDefault(); placeCaretAtEnd(); } });
   document.addEventListener('selectionchange', () => { const s = getSelection(); if (s.rangeCount && inEditor(s.anchorNode)) { lastRange = s.getRangeAt(0).cloneRange(); scheduleUI(); } });
+  document.addEventListener('pointerdown', () => { keyAt = -1e9; }, true);   // a click shows its result on the ribbon at once
   document.addEventListener('keydown', onGlobalKey, true);
   document.addEventListener('mousedown', e => { if (popState && !$('#pop').contains(e.target) && !popState.anchor.contains(e.target)) closePopover(); }, true);
   addEventListener('dragover', e => { if (e.dataTransfer && [...e.dataTransfer.types].includes('Files')) e.preventDefault(); });
