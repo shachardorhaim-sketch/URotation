@@ -1,0 +1,20 @@
+{
+  "id": "tanks",
+  "v": 1,
+  "order": 51,
+  "type": "ARCADE",
+  "added": "2026-11-27",
+  "bg": "#16243a",
+  "icon": "💥",
+  "names": { "he": "טנקים בהרים", "en": "Mountain Tanks", "ar": "دبابات في الجبال", "es": "Tanques en la Montaña", "fr": "Tanks des Montagnes", "pt": "Tanques na Montanha", "ru": "Танки в горах", "de": "Panzer in den Bergen" },
+  "descs": {
+    "he": "קרבות טנקים בתורות על הרים שמתפוצצים. שים לב לרוח! נגד המחשב או בשניים.",
+    "en": "Turn-based tank duels on mountains that blow apart. Mind the wind! 2 players too.",
+    "ar": "معارك دبابات بالتناوب على جبال تتفجر. انتبه للرياح! وللاعبَين أيضاً.",
+    "es": "Duelos de tanques por turnos en montañas que estallan. ¡Ojo al viento! También a 2.",
+    "fr": "Duels de tanks chacun son tour sur des montagnes qui explosent. Gare au vent ! Aussi à 2.",
+    "pt": "Duelos de tanques por turnos em montanhas que explodem. Cuidado com o vento! Também a 2.",
+    "ru": "Танковые дуэли по очереди на взрывающихся горах. Следи за ветром! Можно вдвоём.",
+    "de": "Panzerduelle in Runden auf Bergen, die zerbersten. Achte auf den Wind! Auch zu zweit."
+  }
+}

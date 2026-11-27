@@ -1,0 +1,20 @@
+{
+  "id": "reversi",
+  "v": 1,
+  "order": 40,
+  "type": "STRATEGY",
+  "added": "2026-11-27",
+  "bg": "#0c2a20",
+  "icon": "⚫",
+  "names": { "he": "רברסי", "en": "Reversi", "ar": "ريفرسي", "es": "Reversi", "fr": "Reversi", "pt": "Reversi", "ru": "Реверси", "de": "Reversi" },
+  "descs": {
+    "he": "לכוד את הדיסקיות של היריב והפוך אותן לשלך. נגד המחשב בשלוש רמות או מול חבר.",
+    "en": "Trap your rival's discs and flip them to your colour. Play the computer or a friend!",
+    "ar": "احصر أقراص خصمك واقلبها إلى لونك. العب ضد الكمبيوتر أو صديق!",
+    "es": "Atrapa las fichas del rival y dales la vuelta. ¡Contra la computadora o un amigo!",
+    "fr": "Coince les pions adverses et retourne-les à ta couleur. Contre l'ordi ou un ami !",
+    "pt": "Prenda as peças do rival e vire-as para a sua cor. Contra o computador ou um amigo!",
+    "ru": "Зажимай фишки соперника и переворачивай их в свой цвет. Против компьютера или друга!",
+    "de": "Schließ gegnerische Steine ein und dreh sie in deine Farbe. Gegen PC oder Freunde!"
+  }
+}

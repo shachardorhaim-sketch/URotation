@@ -1,0 +1,20 @@
+{
+  "id": "five-in-row",
+  "v": 1,
+  "order": 53,
+  "type": "STRATEGY",
+  "added": "2026-11-27",
+  "bg": "#16212b",
+  "icon": "⚪",
+  "names": { "he": "חמש בשורה", "en": "Five in a Row", "ar": "خمسة في صف", "es": "Cinco en línea", "fr": "Cinq en ligne", "pt": "Cinco em linha", "ru": "Пять в ряд", "de": "Fünf in einer Reihe" },
+  "descs": {
+    "he": "הנח אבנים וצור שורה של חמש לפני היריב. נגד המחשב בשלוש רמות או מול חבר.",
+    "en": "Place stones and line up five before your rival does. Play the computer or a friend!",
+    "ar": "ضع الأحجار وكوّن صفاً من خمسة قبل خصمك. العب ضد الكمبيوتر أو صديق!",
+    "es": "Pon piedras y alinea cinco antes que tu rival. ¡Contra la computadora o un amigo!",
+    "fr": "Pose des pierres et aligne-en cinq avant ton rival. Contre l'ordi ou un ami !",
+    "pt": "Coloque pedras e alinhe cinco antes do rival. Contra o computador ou um amigo!",
+    "ru": "Ставь камни и выстрой пять в ряд раньше соперника. Против компьютера или друга!",
+    "de": "Setz Steine und bilde vor deinem Gegner eine Fünferreihe. Gegen PC oder Freunde!"
+  }
+}

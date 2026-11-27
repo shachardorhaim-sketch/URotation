@@ -1,0 +1,20 @@
+{
+  "id": "archery",
+  "v": 1,
+  "order": 44,
+  "type": "SPORT",
+  "added": "2026-11-27",
+  "bg": "#1d3b2a",
+  "icon": "🏹",
+  "names": { "he": "קשת וחץ", "en": "Bow and Arrow", "ar": "القوس والسهم", "es": "Arco y Flecha", "fr": "L'Arc et la Flèche", "pt": "Arco e Flecha", "ru": "Лук и стрелы", "de": "Pfeil und Bogen" },
+  "descs": {
+    "he": "משוך את הקשת, שים לב לרוח וקלע למטרות, לבלונים ולתפוח שעל הדחליל. 20 שלבים.",
+    "en": "Draw the bow and hit targets, balloons and the scarecrow's apple. Mind the wind! 20 levels.",
+    "ar": "اسحب القوس وانتبه للرياح وأصب الأهداف والبالونات وتفاحة الفزاعة. 20 مرحلة.",
+    "es": "Tensa el arco y acierta dianas, globos y la manzana del espantapájaros. 20 niveles.",
+    "fr": "Bande l'arc et touche cibles, ballons et la pomme de l'épouvantail. 20 niveaux.",
+    "pt": "Puxe o arco e acerte alvos, balões e a maçã do espantalho. Cuidado com o vento! 20 fases.",
+    "ru": "Натяни лук и попади в мишени, шарики и яблоко на пугале. Следи за ветром! 20 уровней.",
+    "de": "Spann den Bogen und triff Scheiben, Ballons und den Apfel der Vogelscheuche. 20 Level."
+  }
+}
