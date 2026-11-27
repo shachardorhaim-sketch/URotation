@@ -1,0 +1,20 @@
+{
+  "id": "basket-shots",
+  "v": 1,
+  "order": 43,
+  "type": "SPORT",
+  "added": "2026-11-27",
+  "bg": "#1d3a7a",
+  "icon": "🏀",
+  "names": { "he": "זריקות לסל", "en": "Basket Shots", "ar": "رميات السلة", "es": "Tiros a Canasta", "fr": "Tirs au Panier", "pt": "Arremessos à Cesta", "ru": "Броски в кольцо", "de": "Korbwürfe" },
+  "descs": {
+    "he": "גרור ושחרר כדי לזרוק, קלע מכל מקום במגרש, התגבר על הרוח ושבור שיאים.",
+    "en": "Drag and release to shoot, score from every spot, beat the wind and set records.",
+    "ar": "اسحب واترك للرمي، سجّل من كل مكان في الملعب، تغلّب على الرياح وحطّم الأرقام.",
+    "es": "Arrastra y suelta para tirar, encesta desde cada sitio, vence al viento y bate récords.",
+    "fr": "Tire et lâche pour lancer, marque de partout, dompte le vent et bats des records.",
+    "pt": "Arraste e solte para arremessar, acerte de todo lugar, vença o vento e bata recordes.",
+    "ru": "Оттяни и отпусти, чтобы бросить, попадай с любой точки, побеждай ветер и ставь рекорды.",
+    "de": "Ziehen und loslassen zum Werfen, triff von überall, trotze dem Wind und knack Rekorde."
+  }
+}

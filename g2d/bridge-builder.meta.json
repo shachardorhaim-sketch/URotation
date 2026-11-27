@@ -1,0 +1,20 @@
+{
+  "id": "bridge-builder",
+  "v": 1,
+  "order": 30,
+  "type": "PUZZLE",
+  "added": "2026-11-27",
+  "bg": "#1b3a5c",
+  "icon": "🌉",
+  "names": { "he": "בונה גשרים", "en": "Bridge Builder", "ar": "باني الجسور", "es": "Constructor de Puentes", "fr": "Bâtisseur de Ponts", "pt": "Construtor de Pontes", "ru": "Строитель мостов", "de": "Brückenbauer" },
+  "descs": {
+    "he": "בנה גשר מעץ, פלדה וכביש בתוך התקציב, ובדוק אם המשאית עוברת בלי שהוא יקרוס.",
+    "en": "Build a bridge of wood, steel and road on a budget, then see if the truck makes it across.",
+    "ar": "ابنِ جسراً من الخشب والفولاذ والطريق ضمن الميزانية، وشاهد إن كانت الشاحنة ستعبر.",
+    "es": "Construye un puente de madera, acero y carretera con presupuesto y mira si el camión cruza.",
+    "fr": "Construis un pont en bois, acier et route avec un budget, puis vois si le camion passe.",
+    "pt": "Construa uma ponte de madeira, aço e estrada no orçamento e veja se o caminhão atravessa.",
+    "ru": "Построй мост из дерева, стали и дороги в рамках бюджета и проверь, проедет ли грузовик.",
+    "de": "Bau eine Brücke aus Holz, Stahl und Straße im Budget und schau, ob der Laster hinüberkommt."
+  }
+}
