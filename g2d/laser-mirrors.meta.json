@@ -1,0 +1,20 @@
+{
+  "id": "laser-mirrors",
+  "v": 1,
+  "order": 26,
+  "type": "PUZZLE",
+  "added": "2026-11-27",
+  "bg": "#0b1029",
+  "icon": "💎",
+  "names": { "he": "מראות ולייזר", "en": "Laser Mirrors", "ar": "المرايا والليزر", "es": "Espejos y Láser", "fr": "Miroirs et Laser", "pt": "Espelhos e Laser", "ru": "Зеркала и лазер", "de": "Spiegel und Laser" },
+  "descs": {
+    "he": "סובב והזז מראות כדי שקרן הלייזר תפגע בכל הגבישים. 30 שלבים.",
+    "en": "Turn and move mirrors so the laser beam hits every crystal. 30 levels.",
+    "ar": "دوّر المرايا وحرّكها ليصيب شعاع الليزر كل البلورات. 30 مرحلة.",
+    "es": "Gira y mueve espejos para que el láser toque todos los cristales. 30 niveles.",
+    "fr": "Tourne et déplace les miroirs pour que le laser touche chaque cristal.",
+    "pt": "Gire e mova espelhos para o laser acertar todos os cristais. 30 fases.",
+    "ru": "Поворачивай и двигай зеркала, чтобы луч попал во все кристаллы.",
+    "de": "Dreh und schieb Spiegel, bis der Laser jeden Kristall trifft. 30 Level."
+  }
+}

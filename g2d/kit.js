@@ -338,6 +338,7 @@
       toastEl.classList.add('show');
       clearTimeout(toastT); toastT = setTimeout(() => toastEl.classList.remove('show'), ms || 1200);
     };
+    const hideToast = () => { clearTimeout(toastT); toastEl.classList.remove('show'); };
     let hudSig = '';
     g.hud = items => {
       const sig = JSON.stringify(items || []);
@@ -486,6 +487,7 @@
       g.clearFx(); g.keys.clear(); g.hits.clear(); g.touches.clear();
       g.ptr.down = g.ptr.hit = g.ptr.up = false;
       hudSig = '';
+      hideToast();   // הודעה מהסבב הקודם לא נשארת על הלוח החדש
       try { spec.init(g); } catch (e) { report(e); }
       audio(); play('start');
       syncBar();
@@ -508,6 +510,7 @@
       clearTimeout(endTimer);
       g.demo = true; g.state = 'menu';
       g.clearFx(); timers = [];
+      hideToast();
       try { spec.init(g); } catch (e) { report(e); }
       showMenu();
     }

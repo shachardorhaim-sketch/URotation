@@ -1,0 +1,20 @@
+{
+  "id": "battleships",
+  "v": 1,
+  "order": 39,
+  "type": "STRATEGY",
+  "added": "2026-11-27",
+  "bg": "#081c33",
+  "icon": "🚢",
+  "names": { "he": "צוללות", "en": "Battleships", "ar": "معركة بحرية", "es": "Batalla naval", "fr": "Bataille navale", "pt": "Batalha naval", "ru": "Морской бой", "de": "Schiffe versenken" },
+  "descs": {
+    "he": "הסתר את הצי שלך, ירה במים של האויב והטבע את כל הספינות שלו. נגד המחשב או מול חבר.",
+    "en": "Hide your fleet, fire into enemy waters and sink every ship. Vs the computer or a friend.",
+    "ar": "خبّئ أسطولك، أطلق النار على مياه العدو وأغرق كل سفنه. ضد الكمبيوتر أو ضد صديق.",
+    "es": "Esconde tu flota, dispara al enemigo y hunde todos sus barcos. Contra la PC o un amigo.",
+    "fr": "Cache ta flotte, tire sur l'ennemi et coule tous ses navires. Contre l'ordinateur ou un ami.",
+    "pt": "Esconda sua frota, atire no inimigo e afunde todos os navios. Contra o PC ou um amigo.",
+    "ru": "Спрячь свой флот, стреляй по врагу и потопи все его корабли. С компьютером или другом.",
+    "de": "Versteck deine Flotte und versenke alle feindlichen Schiffe. Gegen den PC oder zu zweit."
+  }
+}

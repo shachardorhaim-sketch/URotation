@@ -1,0 +1,20 @@
+{
+  "id": "hidden-picture",
+  "v": 1,
+  "order": 32,
+  "type": "PUZZLE",
+  "added": "2026-11-27",
+  "bg": "#1d1a42",
+  "icon": "🖼️",
+  "names": { "he": "ציור מוסתר", "en": "Hidden Picture", "ar": "الصورة المخفية", "es": "Dibujo Oculto", "fr": "Dessin Caché", "pt": "Desenho Escondido", "ru": "Тайная картинка", "de": "Verstecktes Bild" },
+  "descs": {
+    "he": "מלא משבצות לפי המספרים וגלה ציור צבעוני. 40 ציורים, בלי ניחושים.",
+    "en": "Fill cells by the number clues to reveal a colorful picture. 40 puzzles, no guessing.",
+    "ar": "املأ المربعات حسب الأرقام واكتشف صورة ملوّنة. 40 لغزاً بلا تخمين.",
+    "es": "Llena casillas según los números y descubre un dibujo a color. 40 puzles.",
+    "fr": "Remplis les cases selon les nombres et découvre un dessin en couleur. 40 puzzles.",
+    "pt": "Pinte casas pelos números e revele um desenho colorido. 40 quebra-cabeças.",
+    "ru": "Закрашивай клетки по числам и открой цветную картинку. 40 головоломок.",
+    "de": "Fülle Felder nach den Zahlen und entdecke ein buntes Bild. 40 Rätsel ohne Raten."
+  }
+}
