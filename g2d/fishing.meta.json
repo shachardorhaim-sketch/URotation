@@ -1,0 +1,20 @@
+{
+  "id": "fishing",
+  "v": 1,
+  "order": 48,
+  "type": "CASUAL",
+  "added": "2026-11-27",
+  "bg": "#123049",
+  "icon": "🎣",
+  "names": { "he": "דייג", "en": "Fishing", "ar": "الصيد", "es": "Pesca", "fr": "Pêche", "pt": "Pescaria", "ru": "Рыбалка", "de": "Angeln" },
+  "descs": {
+    "he": "הטל חכה, גלגל בעדינות ותפוס 28 מיני דגים — מנפוצים ועד אגדיים, ביום ובלילה.",
+    "en": "Cast, reel gently and catch 28 kinds of fish — from common to legendary, day and night.",
+    "ar": "ارمِ الصنارة ولُفّ بلطف واصطد 28 نوعاً من السمك، من الشائع إلى الأسطوري.",
+    "es": "Lanza, recoge con cuidado y pesca 28 especies, de comunes a legendarias.",
+    "fr": "Lance, mouline en douceur et attrape 28 espèces, des communes aux légendaires.",
+    "pt": "Lance, enrole com cuidado e pesque 28 espécies, das comuns às lendárias.",
+    "ru": "Забрасывай, аккуратно подматывай и лови 28 видов рыб — от обычных до легендарных.",
+    "de": "Wirf aus, hol vorsichtig ein und fang 28 Fischarten – von häufig bis legendär."
+  }
+}

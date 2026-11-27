@@ -1,0 +1,20 @@
+{
+  "id": "word-of-day",
+  "v": 1,
+  "order": 20,
+  "type": "PUZZLE",
+  "added": "2026-11-27",
+  "bg": "#1a1644",
+  "icon": "🔤",
+  "names": { "he": "מילה ביום", "en": "Word of the Day", "ar": "كلمة اليوم", "es": "Palabra del día", "fr": "Mot du jour", "pt": "Palavra do dia", "ru": "Слово дня", "de": "Wort des Tages" },
+  "descs": {
+    "he": "נחש את המילה בת 5 האותיות ב-6 ניסיונות. מילה חדשה כל יום, בעברית או באנגלית.",
+    "en": "Guess the 5-letter word in 6 tries. A new word every day, plus unlimited practice.",
+    "ar": "خمّن الكلمة المكوّنة من 5 أحرف في 6 محاولات. كلمة جديدة كل يوم وتدريب بلا حدود.",
+    "es": "Adivina la palabra de 5 letras en 6 intentos. Una palabra nueva cada día y práctica libre.",
+    "fr": "Devine le mot de 5 lettres en 6 essais. Un nouveau mot chaque jour et un entraînement libre.",
+    "pt": "Adivinhe a palavra de 5 letras em 6 tentativas. Uma palavra nova por dia e treino livre.",
+    "ru": "Угадай слово из 5 букв за 6 попыток. Новое слово каждый день и тренировка без ограничений.",
+    "de": "Errate das Wort mit 5 Buchstaben in 6 Versuchen. Jeden Tag ein neues Wort und freies Üben."
+  }
+}

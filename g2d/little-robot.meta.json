@@ -1,0 +1,20 @@
+{
+  "id": "little-robot",
+  "v": 1,
+  "order": 17,
+  "type": "ARCADE",
+  "added": "2026-11-27",
+  "bg": "#1f3a63",
+  "icon": "🤖",
+  "names": { "he": "הרובוט הקטן", "en": "Little Robot", "ar": "الروبوت الصغير", "es": "El Pequeño Robot", "fr": "Le Petit Robot", "pt": "O Pequeno Robô", "ru": "Маленький робот", "de": "Der kleine Roboter" },
+  "descs": {
+    "he": "קפוץ, אסוף ברגים ופתח דלתות עם מפתחות ב-30 שלבים של פלטפורמה מדויקת.",
+    "en": "Jump, collect bolts and open doors with keys in 30 precise platform levels.",
+    "ar": "اقفز واجمع البراغي وافتح الأبواب بالمفاتيح في 30 مرحلة منصات دقيقة.",
+    "es": "Salta, junta tornillos y abre puertas con llaves en 30 niveles de plataformas.",
+    "fr": "Saute, ramasse des boulons et ouvre des portes avec des clés en 30 niveaux.",
+    "pt": "Pule, junte parafusos e abra portas com chaves em 30 fases de plataforma.",
+    "ru": "Прыгай, собирай болты и открывай двери ключами в 30 точных уровнях.",
+    "de": "Spring, sammle Schrauben und öffne Türen mit Schlüsseln in 30 Levels."
+  }
+}
