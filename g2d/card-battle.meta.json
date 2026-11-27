@@ -1,0 +1,29 @@
+{
+  "id": "card-battle",
+  "v": 1,
+  "order": 36,
+  "type": "STRATEGY",
+  "added": "2026-11-27",
+  "bg": "#2c1d52",
+  "icon": "🃏",
+  "names": {
+    "he": "קלפי קרב",
+    "en": "Card Battle",
+    "ar": "معركة البطاقات",
+    "es": "Batalla de Cartas",
+    "fr": "Bataille de Cartes",
+    "pt": "Batalha de Cartas",
+    "ru": "Битва карт",
+    "de": "Kartenkampf"
+  },
+  "descs": {
+    "he": "שחק קלפי יצורים וכישופים, נצח 8 יריבים ואסוף קלפים חדשים לחפיסה שלך.",
+    "en": "Play creature and spell cards, beat 8 rivals and collect new cards for your deck.",
+    "ar": "العب بطاقات المخلوقات والتعاويذ، واهزم 8 خصوم واجمع بطاقات جديدة لمجموعتك.",
+    "es": "Juega cartas de criaturas y hechizos, vence a 8 rivales y gana cartas nuevas.",
+    "fr": "Joue des cartes de créatures et de sorts, bats 8 rivaux et gagne de nouvelles cartes.",
+    "pt": "Jogue cartas de criaturas e feitiços, vença 8 rivais e ganhe cartas novas.",
+    "ru": "Играй картами существ и заклинаний, победи 8 соперников и собери новые карты.",
+    "de": "Spiele Kreaturen- und Zauberkarten, besiege 8 Gegner und sammle neue Karten."
+  }
+}

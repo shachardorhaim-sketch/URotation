@@ -1,0 +1,20 @@
+{
+  "id": "gravity-flip",
+  "v": 1,
+  "order": 13,
+  "type": "ARCADE",
+  "added": "2026-11-27",
+  "bg": "#060a20",
+  "icon": "🙃",
+  "names": { "he": "הופכים כבידה", "en": "Gravity Flip", "ar": "قلب الجاذبية", "es": "Gravedad al Revés", "fr": "Gravité Inversée", "pt": "Gravidade Invertida", "ru": "Переворот гравитации", "de": "Schwerkraft-Dreher" },
+  "descs": {
+    "he": "רוץ במסדרון והפוך את הכבידה מהרצפה לתקרה. התחמק מקוצים ובורות ואסוף מטבעות.",
+    "en": "Run down a corridor and flip gravity between floor and ceiling. Dodge spikes, grab coins.",
+    "ar": "اركض في الممر واقلب الجاذبية بين الأرض والسقف. تفادَ الأشواك واجمع العملات.",
+    "es": "Corre e invierte la gravedad entre suelo y techo. Esquiva pinchos y junta monedas.",
+    "fr": "Cours et inverse la gravité entre sol et plafond. Évite les pics, prends les pièces.",
+    "pt": "Corra e inverta a gravidade entre o chão e o teto. Desvie dos espinhos e pegue moedas.",
+    "ru": "Беги и переворачивай гравитацию между полом и потолком. Обходи шипы, собирай монеты.",
+    "de": "Renn los und dreh die Schwerkraft zwischen Boden und Decke. Weich Stacheln aus, sammle Münzen."
+  }
+}

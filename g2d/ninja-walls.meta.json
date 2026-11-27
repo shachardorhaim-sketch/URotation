@@ -1,0 +1,20 @@
+{
+  "id": "ninja-walls",
+  "v": 1,
+  "order": 14,
+  "type": "ARCADE",
+  "added": "2026-11-27",
+  "bg": "#10162e",
+  "icon": "🥷",
+  "names": { "he": "נינג'ה על הקירות", "en": "Ninja Walls", "ar": "نينجا الجدران", "es": "Ninja en las Paredes", "fr": "Ninja des Murs", "pt": "Ninja nas Paredes", "ru": "Ниндзя на стенах", "de": "Ninja an der Wand" },
+  "descs": {
+    "he": "קפוץ מקיר לקיר וטפס הכי גבוה שאפשר. התחמק ממסורים וקוצים ואסוף מטבעות.",
+    "en": "Leap from wall to wall and climb as high as you can. Dodge saws and spikes, grab coins.",
+    "ar": "اقفز من جدار إلى جدار وتسلّق أعلى ما يمكن. تفادَ المناشير والأشواك واجمع العملات.",
+    "es": "Salta de pared en pared y sube lo más alto posible. Esquiva sierras y junta monedas.",
+    "fr": "Saute de mur en mur et grimpe le plus haut possible. Évite les scies, prends les pièces.",
+    "pt": "Pule de parede em parede e suba o mais alto possível. Desvie das serras e pegue moedas.",
+    "ru": "Прыгай со стены на стену и забирайся как можно выше. Уклоняйся от пил, собирай монеты.",
+    "de": "Spring von Wand zu Wand und klettere so hoch du kannst. Weich Sägen aus, sammle Münzen."
+  }
+}

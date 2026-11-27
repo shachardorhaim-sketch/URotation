@@ -1,0 +1,20 @@
+{
+  "id": "spot-difference",
+  "v": 1,
+  "order": 31,
+  "type": "PUZZLE",
+  "added": "2026-11-27",
+  "bg": "#1d1940",
+  "icon": "🔍",
+  "names": { "he": "מצא את ההבדלים", "en": "Spot the Difference", "ar": "أوجد الاختلافات", "es": "Encuentra las diferencias", "fr": "Trouve les différences", "pt": "Jogo dos erros", "ru": "Найди отличия", "de": "Finde die Unterschiede" },
+  "descs": {
+    "he": "שתי תמונות כמעט זהות: מצא את כל ההבדלים לפני שהזמן נגמר. 30 שלבים!",
+    "en": "Two almost identical pictures: find every difference before time runs out. 30 levels!",
+    "ar": "صورتان متشابهتان تقريباً: أوجد كل الاختلافات قبل أن ينفد الوقت. 30 مرحلة!",
+    "es": "Dos imágenes casi iguales: encuentra todas las diferencias antes de que acabe el tiempo.",
+    "fr": "Deux images presque pareilles : trouve toutes les différences avant la fin du temps !",
+    "pt": "Duas imagens quase iguais: ache todas as diferenças antes que o tempo acabe. 30 fases!",
+    "ru": "Две почти одинаковые картинки: найди все отличия, пока не кончилось время. 30 уровней!",
+    "de": "Zwei fast gleiche Bilder: Finde alle Unterschiede, bevor die Zeit abläuft. 30 Level!"
+  }
+}

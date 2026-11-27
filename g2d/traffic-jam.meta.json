@@ -1,0 +1,20 @@
+{
+  "id": "traffic-jam",
+  "v": 1,
+  "order": 29,
+  "type": "PUZZLE",
+  "added": "2026-11-27",
+  "bg": "#4e9a3e",
+  "icon": "🚗",
+  "names": { "he": "פקק תנועה", "en": "Traffic Jam", "ar": "زحمة سير", "es": "Atasco", "fr": "Embouteillage", "pt": "Engarrafamento", "ru": "Пробка", "de": "Verkehrsstau" },
+  "descs": {
+    "he": "הזז מכוניות ומשאיות בחניון הפקוק ופנה דרך החוצה למכונית האדומה. 40 שלבים!",
+    "en": "Slide cars and trucks around a jammed parking lot to free the red car. 40 levels!",
+    "ar": "حرّك السيارات والشاحنات في الموقف المزدحم لتُخرج السيارة الحمراء. 40 مرحلة!",
+    "es": "Desliza coches y camiones en el aparcamiento lleno para sacar el coche rojo. ¡40 niveles!",
+    "fr": "Fais glisser voitures et camions dans le parking bondé pour libérer la voiture rouge.",
+    "pt": "Deslize carros e caminhões no estacionamento lotado para tirar o carro vermelho. 40 fases!",
+    "ru": "Двигай машины и грузовики на забитой стоянке, чтобы выпустить красную машину. 40 уровней!",
+    "de": "Schiebe Autos und Lkw auf dem vollen Parkplatz, bis das rote Auto frei ist. 40 Level!"
+  }
+}
