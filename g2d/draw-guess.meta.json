@@ -1,0 +1,20 @@
+{
+  "id": "draw-guess",
+  "v": 1,
+  "order": 52,
+  "type": "FUNNY",
+  "added": "2026-11-27",
+  "bg": "#2b1b6e",
+  "icon": "🎨",
+  "names": { "he": "ציירו ונחשו", "en": "Draw & Guess", "ar": "ارسم وخمّن", "es": "Dibuja y Adivina", "fr": "Dessine et Devine", "pt": "Desenhe e Adivinhe", "ru": "Рисуй и угадывай", "de": "Zeichnen & Raten" },
+  "descs": {
+    "he": "אחד מצייר וכולם מנחשים! אונליין עם קוד חדר, או עם חברים בחדר אחד.",
+    "en": "One draws, everyone guesses! Online with a room code, or with friends in one room.",
+    "ar": "واحد يرسم والجميع يخمّنون! أونلاين برمز غرفة، أو مع أصدقاء في غرفة واحدة.",
+    "es": "¡Uno dibuja y todos adivinan! En línea con código de sala o con amigos en la misma sala.",
+    "fr": "Un dessine, tous devinent ! En ligne avec un code de salle, ou entre amis dans une pièce.",
+    "pt": "Um desenha e todos adivinham! Online com código de sala ou com amigos na mesma sala.",
+    "ru": "Один рисует, все угадывают! Онлайн по коду комнаты или с друзьями в одной комнате.",
+    "de": "Einer zeichnet, alle raten! Online mit Raumcode oder mit Freunden in einem Raum."
+  }
+}

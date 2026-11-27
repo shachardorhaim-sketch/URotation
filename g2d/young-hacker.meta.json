@@ -1,0 +1,20 @@
+{
+  "id": "young-hacker",
+  "v": 1,
+  "order": 6,
+  "type": "PUZZLE",
+  "added": "2026-11-27",
+  "bg": "#121519",
+  "icon": "💻",
+  "names": { "he": "האקר צעיר", "en": "Young Hacker", "ar": "الهاكر الصغير", "es": "Joven Hacker", "fr": "Jeune Hacker", "pt": "Jovem Hacker", "ru": "Юный хакер", "de": "Junger Hacker" },
+  "descs": {
+    "he": "24 משימות סייבר חוקיות במחשב רטרו: צפנים, קודים, פישינג ועוד.",
+    "en": "24 legal cyber missions on a retro computer: ciphers, codes, phishing and more.",
+    "ar": "24 مهمة سيبرانية قانونية على حاسوب قديم: شيفرات ورموز وتصيّد والمزيد.",
+    "es": "24 misiones de ciberseguridad legales en una computadora retro: cifrados y más.",
+    "fr": "24 missions cyber légales sur un ordinateur rétro : codes secrets, phishing et plus.",
+    "pt": "24 missões de cibersegurança legais num computador retrô: cifras, códigos e mais.",
+    "ru": "24 законные кибермиссии на ретро-компьютере: шифры, коды, фишинг и не только.",
+    "de": "24 legale Cyber-Missionen auf einem Retro-Computer: Geheimschriften und mehr."
+  }
+}
